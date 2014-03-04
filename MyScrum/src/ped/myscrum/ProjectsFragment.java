@@ -112,6 +112,7 @@ public class ProjectsFragment extends Fragment {
 		listDataHeader.add("Project 1");
 		listDataHeader.add("Project 2");
 		listDataHeader.add("Project 3");
+		listDataHeader.add("New Project");
 
 		// Adding child data
 		List<String> project1 = new ArrayList<String>();
