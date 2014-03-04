@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">MyScrum</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="drawer_open">Slider Menu Opened</string>
+    <string name="drawer_close">Slider Menu Closed</string>
+    
+    <!-- Nav Drawer Menu Items -->
+    <string-array name="nav_drawer_items">
+        <item >Home</item>
+        <item >Login</item>
+        <item >Signup</item>
+    </string-array>
+    
+    <!-- Nav Drawer List Item Icons -->
+    <!-- Keep them in order as the titles are in -->
+    <array name="nav_drawer_icons">
+        <item>@drawable/home</item>
+        <item>@drawable/login</item>
+        <item>@drawable/signup</item>
+    </array>
+    
+    <!-- Nav Drawer Menu Items When Logged In -->
+    <string-array name="nav_drawer_items_logged_in">
+        <item >Home</item>
+        <item >Projects</item>
+        <item >Account Settings</item>
+        <item >Sign out</item>
+    </string-array>
+    
+    <array name="nav_drawer_icons_logged_in">
+        <item>@drawable/home</item>
+        <item>@drawable/projects</item>
+        <item>@drawable/settings</item>
+        <item>@drawable/logout</item>
+    </array>
+    
+    <!-- Nav Drawer Menu Items Projects-->
+    <string-array name="nav_drawer_items_projects">
+        <item >Home</item>
+        <item >Team</item>
+        <item >Backlog</item>
+        <item >Sprints</item>
+        <item >Tests</item>
+        <item >Back To Projects</item>
+        <item >Account Settings</item>
+        <item >Sign out</item>
+    </string-array>
+    
+    <array name="nav_drawer_icons_projects">
+        <item>@drawable/home</item>
+        <item>@drawable/team</item>
+        <item>@drawable/backlog</item>
+        <item>@drawable/sprint</item>
+        <item>@drawable/tests</item>
+        <item>@drawable/projects</item>
+        <item>@drawable/settings</item>
+        <item>@drawable/logout</item>
+    </array>
+    
+    <!-- Content Description -->
+    <string name="desc_list_item_icon">Item Icon</string>
+    
+    
+    <string name="login">Log in</string>
+    <string name="signup">Sign up</string>
+    <string name="welcome">Welcome to MyScrum!</string>
+    
+    <string name="login_screen">Log in</string>
+    <string name="username">Username</string>
+	<string name="password">Password</string>
+	<string name="back">Back</string>
+	
+	<string name="first_name">First name</string>
+	<string name="last_name">Last name</string>
+	<string name="password_confirmation">Confirm Password</string>
+	<string name="sprints">Sprints</string>
+	<string name="team">Team</string>
+    <string name="tests">Tests</string>
+    <string name="backlog">Backlog</string>
+    <string name="projects">Projects</string>
+
+</resources>
