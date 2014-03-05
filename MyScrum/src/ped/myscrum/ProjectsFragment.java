@@ -18,7 +18,6 @@ import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ExpandableListView.OnGroupClickListener;
 import android.widget.ExpandableListView.OnGroupCollapseListener;
-import android.widget.ExpandableListView.OnGroupExpandListener;
 
 public class ProjectsFragment extends Fragment {
 
@@ -43,27 +42,18 @@ public class ProjectsFragment extends Fragment {
 			@Override
 			public boolean onGroupClick(ExpandableListView parent, View v,
 					int groupPosition, long id) {
+				if(listDataHeader.get(groupPosition).equals("Create New Project")){
+					Fragment fragment = null;
+					fragment = new CreateProjectFragment();
+					FragmentManager fragmentManager = getFragmentManager();
+					fragmentManager.beginTransaction()
+							.replace(R.id.frame_container, fragment).commit();
+				}
 				return false;
 			}
 		});
 
 
-		expListView.setOnGroupExpandListener(new OnGroupExpandListener() {
-
-			@Override
-			public void onGroupExpand(int groupPosition) {
-				;
-			}
-		});
-
-		expListView.setOnGroupCollapseListener(new OnGroupCollapseListener() {
-
-			@Override
-			public void onGroupCollapse(int groupPosition) {
-				;
-
-			}
-		});
 
 		expListView.setOnChildClickListener(new OnChildClickListener() {
 
@@ -71,6 +61,8 @@ public class ProjectsFragment extends Fragment {
 			public boolean onChildClick(ExpandableListView parent, View v,
 					int groupPosition, int childPosition, long id) {
 				Fragment fragment = null;
+				
+				
 				switch (childPosition) {
 					case 0:
 						fragment = new TeamFragment();
@@ -112,7 +104,7 @@ public class ProjectsFragment extends Fragment {
 		listDataHeader.add("Project 1");
 		listDataHeader.add("Project 2");
 		listDataHeader.add("Project 3");
-		listDataHeader.add("New Project");
+		listDataHeader.add("Create New Project");
 
 		// Adding child data
 		List<String> project1 = new ArrayList<String>();
@@ -137,5 +129,6 @@ public class ProjectsFragment extends Fragment {
 		listDataChild.put(listDataHeader.get(0), project1); // Header, Child data
 		listDataChild.put(listDataHeader.get(1), project2);
 		listDataChild.put(listDataHeader.get(2), project3);
+
 	}
 }

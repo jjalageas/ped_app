@@ -1,58 +1,108 @@
 package ped.myscrum;
 
-import android.app.Fragment;
 import info.androidhive.slidingmenu.R;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import ped.myscrum.adapter.ExpandableListAdapter;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnChildClickListener;
+import android.widget.ExpandableListView.OnGroupClickListener;
 
-public class TeamFragment extends Fragment{
+public class TeamFragment extends Fragment {
 
-	ListView listView;
+	ExpandableListAdapter listAdapter;
+	ExpandableListView expListView;
+	List<String> listDataHeader;
+	HashMap<String, List<String>> listDataChild;
 
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-
+	@Override
+	 public View onCreateView(LayoutInflater inflater, ViewGroup container,
+	            Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		View rootView = inflater.inflate(R.layout.fragment_team, container, false);
 
-		listView = (ListView) rootView.findViewById(R.id.list);
-		String[] values = new String[] { "Team member #1", 
-				"Team member #2",
-				"Team member #3",
-				"Team member #4", 
-				"Team member #5", 
-				"Team member #6", 
-				"Team member #7", 
-				"Add Team Member" 
-		};
 
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(),
-				android.R.layout.simple_list_item_1, android.R.id.text1, values);
-
-		listView.setAdapter(adapter); 
-		listView.setOnItemClickListener(new OnItemClickListener() {
+		expListView = (ExpandableListView) rootView.findViewById(R.id.lvExp);
+		prepareListData();
+		listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
+		expListView.setAdapter(listAdapter);
+		expListView.setOnGroupClickListener(new OnGroupClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-
-				int itemPosition     = position;
-				String  itemValue    = (String) listView.getItemAtPosition(position);
-
+			public boolean onGroupClick(ExpandableListView parent, View v,
+					int groupPosition, long id) {
+				if(listDataHeader.get(groupPosition).equals("Add Team Member")){
+					Fragment fragment = new CreateTeamMemberFragment();
+					FragmentManager fragmentManager = getFragmentManager();
+					fragmentManager.beginTransaction()
+							.replace(R.id.frame_container, fragment).commit();
+				}
+				return false;
 			}
-
 		});
-		return rootView; 
+
+
+
+		expListView.setOnChildClickListener(new OnChildClickListener() {
+
+			@Override
+			public boolean onChildClick(ExpandableListView parent, View v,
+					int groupPosition, int childPosition, long id) {
+				switch (childPosition) {
+					case 0:
+						break;
+					case 1:
+						//TODO query to remove user
+						break;		
+					default:
+						break;
+				}
+				return false;
+			}
+		});
+		return rootView;
 	}
 
-}
 
+	private void prepareListData() {
+		listDataHeader = new ArrayList<String>();
+		listDataChild = new HashMap<String, List<String>>();
+
+		// Adding child data
+		listDataHeader.add("Team member #1");
+		listDataHeader.add("Team member #2");
+		listDataHeader.add("Team member #3");
+		listDataHeader.add("Add Team Member");
+
+		// Adding child data
+		List<String> user1 = new ArrayList<String>();
+		user1.add("Rank");
+		user1.add("Remove User");
+
+
+		List<String> user2 = new ArrayList<String>();
+		user2.add("Rank");
+		user2.add("Remove User");
+		
+		List<String> user3 = new ArrayList<String>();
+		user3.add("Rank");
+		user3.add("Remove User");
+
+
+		listDataChild.put(listDataHeader.get(0),user1); // Header, Child data
+		listDataChild.put(listDataHeader.get(1), user2);
+		listDataChild.put(listDataHeader.get(2), user3);
+	}
+}
 
 	
 
