@@ -1,46 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RelativeLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" 
-    android:background="@drawable/index_plain" >
-    
-    <TextView
-        android:id="@+id/first_name_view"
+    android:background="@drawable/index_plain"
+    android:orientation="vertical" >
+
+    <Button
+        android:id="@+id/signup_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/first_name" />
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/password_confirmation"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/signup" />
 
     <EditText
-        android:id="@+id/firstname"
-        android:layout_width="fill_parent"
+        android:id="@+id/lastname"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/last_name_view"
+        android:layout_alignLeft="@+id/firstname"
+        android:ems="10"
         android:inputType="text"
-        android:text="@string/first_name" />
+        android:text="@string/last_name" />
 
     <TextView
         android:id="@+id/last_name_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/last_name" />
+        android:layout_alignRight="@+id/first_name_view"
+        android:layout_below="@+id/first_name_view"
+        android:layout_marginTop="42dp"
+        android:text="@string/last_name"
+        android:textColor="#FFFFFF" />
 
     <EditText
-        android:id="@+id/lastname"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:inputType="text"
-        android:text="@string/last_name" />
-
-    <TextView
-        android:id="@+id/username_view"
+        android:id="@+id/firstname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/username" />
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/signup_button"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:inputType="text"
+        android:text="@string/first_name" >
+
+        <requestFocus />
+    </EditText>
+
+    <TextView
+        android:id="@+id/first_name_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/firstname"
+        android:layout_alignParentLeft="true"
+        android:text="@string/first_name"
+        android:textColor="#FFFFFF" />
 
     <EditText
         android:id="@+id/username"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/username_view"
+        android:layout_alignLeft="@+id/lastname"
+        android:ems="10"
         android:inputType="text"
         android:text="@string/username" />
 
@@ -48,12 +73,18 @@
         android:id="@+id/password_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/password" />
+        android:layout_alignLeft="@+id/username_view"
+        android:layout_centerVertical="true"
+        android:text="@string/password"
+        android:textColor="#FFFFFF" />
 
     <EditText
         android:id="@+id/password"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/password_view"
+        android:layout_alignLeft="@+id/username"
+        android:ems="10"
         android:inputType="textPassword"
         android:text="@string/password" />
 
@@ -61,32 +92,31 @@
         android:id="@+id/password_confirmation_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/password_confirmation" />
+        android:layout_alignLeft="@+id/password_view"
+        android:layout_below="@+id/password_view"
+        android:layout_marginTop="36dp"
+        android:text="@string/password_confirmation"
+        android:textColor="#FFFFFF" />
 
     <EditText
         android:id="@+id/password_confirmation"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/password_confirmation_view"
+        android:layout_marginLeft="19dp"
+        android:layout_toRightOf="@+id/password_confirmation_view"
+        android:ems="10"
         android:inputType="textPassword"
         android:text="@string/password" />
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/username_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="0.90"
-        android:text="" />
+        android:layout_above="@+id/password"
+        android:layout_alignLeft="@+id/last_name_view"
+        android:layout_marginBottom="25dp"
+        android:text="@string/username"
+        android:textColor="#FFFFFF" />
 
-    <Button
-        android:id="@+id/signup_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/signup" />
-
-    <Button
-        android:id="@+id/back"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/back" />
-    
-</LinearLayout>
+</RelativeLayout>

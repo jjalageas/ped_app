@@ -37,28 +37,15 @@
         <item>@drawable/logout</item>
     </array>
     
-    <!-- Nav Drawer Menu Items Projects-->
-    <string-array name="nav_drawer_items_projects">
-        <item >Home</item>
-        <item >Team</item>
-        <item >Backlog</item>
-        <item >Sprints</item>
-        <item >Tests</item>
-        <item >Back To Projects</item>
-        <item >Account Settings</item>
-        <item >Sign out</item>
+    
+    <string-array name="users">
+        <item>jjalageas</item>
+        <item>fcastandet</item>
+        <item>rherbert</item>
+        <item>tdiallo</item>
+        <item>jport</item>
     </string-array>
     
-    <array name="nav_drawer_icons_projects">
-        <item>@drawable/home</item>
-        <item>@drawable/team</item>
-        <item>@drawable/backlog</item>
-        <item>@drawable/sprint</item>
-        <item>@drawable/tests</item>
-        <item>@drawable/projects</item>
-        <item>@drawable/settings</item>
-        <item>@drawable/logout</item>
-    </array>
     
     <!-- Content Description -->
     <string name="desc_list_item_icon">Item Icon</string>
@@ -81,5 +68,18 @@
     <string name="tests">Tests</string>
     <string name="backlog">Backlog</string>
     <string name="projects">Projects</string>
-
+    <string name="account_settings">Account Settings</string>
+	<string name="add_user">Add User</string>
+	<string name="project_name">Project Name:</string>
+	<string name="repository">Repository:</string>
+	<string name="create_project">Create Project</string>
+	<string name="title">Title:</string>
+	<string name="description">Description:</string>
+	<string name="difficulty">Difficulty:</string>
+	<string name="priority">Priority:</string>
+    <string name="submit">Submit</string>
+    <string name="username2">Username:</string>
+    <string name="first_name2">First Name:</string>
+    <string name="last_name2">Last Name</string>
+    <string name="rank">Rank:</string>
 </resources>

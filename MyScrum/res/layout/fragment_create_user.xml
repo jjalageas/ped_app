@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RelativeLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/index_plain"
+    android:orientation="vertical" >
+
+    <GridLayout
+        android:id="@+id/grid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="114dp"
+        android:columnCount="1" >
+    </GridLayout>
+
+    <Spinner
+        android:id="@+id/spinner1"
+        style="@android:style/TextAppearance.DeviceDefault.Widget.DropDownItem"
+        android:layout_width="182dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/add_user"
+        android:layout_centerHorizontal="true"
+  		android:background="#FFFFFF"/>
+
+    <Button
+        android:id="@+id/add_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/grid"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:text="@string/add_user" />
+
+</RelativeLayout>
