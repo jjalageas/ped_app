@@ -7,44 +7,44 @@
     android:orientation="vertical" >
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="24dp"
         android:layout_marginTop="26dp"
-        android:text="@string/username2"
+        android:text="@string/blank"
         android:textColor="#FFFFFF" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/first_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView2"
-        android:layout_below="@+id/textView2"
+        android:layout_alignLeft="@+id/username"
+        android:layout_below="@+id/username"
         android:layout_marginTop="30dp"
-        android:text="@string/first_name2"
+        android:text="@string/blank"
         android:textColor="#FFFFFF" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/last_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView3"
-        android:layout_below="@+id/textView3"
+        android:layout_alignLeft="@+id/first_name"
+        android:layout_below="@+id/first_name"
         android:layout_marginTop="36dp"
-        android:text="@string/last_name2"
+        android:text="@string/blank"
         android:textColor="#FFFFFF" />
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView4"
-        android:layout_below="@+id/textView4"
+        android:layout_alignLeft="@+id/last_name"
+        android:layout_below="@+id/last_name"
         android:layout_marginTop="35dp"
-        android:text="@string/rank"
+        android:text="@string/blank"
         android:textColor="#FFFFFF" />
 
 </RelativeLayout>

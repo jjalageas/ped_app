@@ -61,29 +61,32 @@ public class ProjectsFragment extends Fragment {
 			public boolean onChildClick(ExpandableListView parent, View v,
 					int groupPosition, int childPosition, long id) {
 				Fragment fragment = null;
-				
-				
+
+
 				switch (childPosition) {
-					case 0:
-						fragment = new TeamFragment();
-						break;
-					case 1:
-						fragment = new BacklogFragment();
-						break;
-					case 2:
-						fragment = new SprintsFragment();
-						break;
-					case 3:
-						fragment = new TestsFragment();
-						break;			
-					default:
-						break;
+				case 0:
+					fragment = new DescriptionFragment();
+					break;
+				case 1:
+					fragment = new TeamFragment();
+					break;
+				case 2:
+					fragment = new BacklogFragment();
+					break;
+				case 3:
+					fragment = new SprintsFragment();
+					break;
+				case 4:
+					fragment = new TestsFragment();
+					break;			
+				default:
+					break;
 				}
-				
+
 				if (fragment != null) {
 					FragmentManager fragmentManager = getFragmentManager();
 					fragmentManager.beginTransaction()
-							.replace(R.id.frame_container, fragment).commit();
+					.replace(R.id.frame_container, fragment).commit();
 				} else {
 					// error in creating fragment
 					Log.e("MainActivity", "Error in creating fragment");
@@ -108,18 +111,21 @@ public class ProjectsFragment extends Fragment {
 
 		// Adding child data
 		List<String> project1 = new ArrayList<String>();
+		project1.add("Description");
 		project1.add("Team");
 		project1.add("Backlog");
 		project1.add("Sprints");
 		project1.add("Tests");
 
 		List<String> project2 = new ArrayList<String>();
+		project2.add("Description");
 		project2.add("Team");
 		project2.add("Backlog");
 		project2.add("Sprints");
 		project2.add("Tests");
 		
 		List<String> project3 = new ArrayList<String>();
+		project3.add("Description");
 		project3.add("Team");
 		project3.add("Backlog");
 		project3.add("Sprints");

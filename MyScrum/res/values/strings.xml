@@ -82,4 +82,7 @@
     <string name="first_name2">First Name:</string>
     <string name="last_name2">Last Name:</string>
     <string name="rank">Rank:</string>
+    <string name="email2">Email:</string>
+    <string name="blank"> </string>
+    
 </resources>
