@@ -1,24 +1,21 @@
 package ped.myscrum;
 
+import info.androidhive.slidingmenu.R;
+
 import java.io.BufferedReader;
-import java.io.InputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
-import info.androidhive.slidingmenu.R;
 import android.app.Fragment;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +25,9 @@ import android.widget.Spinner;
 
 public class CreateTeamMemberFragment extends Fragment{
 	
+	private CharSequence api_key;
+	private int project_id;
+	
 	public CreateTeamMemberFragment(){}
 	
 	@Override
@@ -36,65 +36,82 @@ public class CreateTeamMemberFragment extends Fragment{
  
         View rootView = inflater.inflate(R.layout.fragment_create_user, container, false);
 
-        //TODO retrieve users from database and add them dynamically
+        api_key = getArguments().getString("api_key");
+		project_id = getArguments().getInt("project_id");
     	Spinner spinner = (Spinner) rootView.findViewById(R.id.spinner1);
+    	List<String> list = new ArrayList<String>();
+    	Button add_user = (Button) rootView.findViewById(R.id.add_user);
     	
- 
-    	String result = "";
-    	InputStream is = null;
-    	try{
-    	        HttpClient httpclient = new DefaultHttpClient();
-    	        HttpPost httppost = new HttpPost("http://10.0.2.2/ped_app/MyScrum/database_connection/connection.php");
-    	        HttpResponse response = httpclient.execute(httppost);
-    	        HttpEntity entity = response.getEntity();
-    	        is = entity.getContent();
-    	}catch(Exception e){
-    	        Log.e("log_tag", "Error in http connection "+e.toString());
-    	}
+    	ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this.getActivity(),
+				android.R.layout.simple_spinner_item, list);
+    	new UsersRetrieval(list, spinner, dataAdapter).execute("http://10.0.2.2:3000/api/owner/projects/3/users/add?api_key=" + api_key);
+    	
 
-    	try{
-    	        BufferedReader reader = new BufferedReader(new InputStreamReader(is,"iso-8859-1"),8);
-    	        StringBuilder sb = new StringBuilder();
-    	        String line = null;
-    	        while ((line = reader.readLine()) != null) {
-    	                sb.append(line + "\n");
-    	        }
-    	        is.close();
-    	 
-    	        result=sb.toString();
-    	}catch(Exception e){
-    	        Log.e("log_tag", "Error converting result "+e.toString());
-    	}
-    	 
-    	try{
-		JSONArray jArray = new JSONArray(result);
-		for(int i=0;i<jArray.length();i++){
-			JSONObject json_data = jArray.getJSONObject(i);
-			Log.i("log_tag","username: "+json_data.getString("username"));
-		}
-    	   
-	}catch(JSONException e){
-	        Log.e("log_tag", "Error parsing data "+e.toString());
+    	return rootView;
 	}
     	
     	
     	
-    	
-    	List<String> list = new ArrayList<String>();
-    	list.add("jjalageas");
-    	list.add("fcastand");
-    	list.add("jport");
-    	list.add("rherbert");
-    	list.add("tdiallo");
-    	ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this.getActivity(),
-    		android.R.layout.simple_spinner_item, list);
-    	dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-    	spinner.setAdapter(dataAdapter);
-        
-        Button add_user = (Button) rootView.findViewById(R.id.add_user);
-        
-        
-        return rootView;
-    }
+private class UsersRetrieval extends AsyncTask<String, String, String>{
+		
+		private List<String> listData;
+		private Spinner spinner;
+		private ArrayAdapter<String> dataAdapter;
+
+
+		
+		public UsersRetrieval(List<String> list, Spinner s, ArrayAdapter<String> adapter){
+			listData = list;
+			spinner = s;
+			dataAdapter = adapter;
+
+
+		}
+		
+		
+		@Override
+		protected String doInBackground(String... url){
+			String result = " ";
+			URL url_init;
+			HttpURLConnection conn;
+			BufferedReader rd;
+			String line;
+			try{
+			url_init = new URL(url[0]);
+			conn = (HttpURLConnection) url_init.openConnection();
+			conn.setRequestMethod("GET");
+			rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			while ((line = rd.readLine()) != null) {
+				result += line;
+			}
+			rd.close();
+			}catch (IOException e) {
+				e.printStackTrace();
+			}
+			return result;
+		}
+
+
+		@Override
+		protected void onPostExecute(String result) {
+
+			super.onPostExecute(result);
+
+			try{
+				JSONArray data;
+				data = new JSONArray(result);
+
+				for(int i=0; i<data.length(); i++)
+					listData.add(data.getJSONObject(i).getString("username"));
+
+				dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+				spinner.setAdapter(dataAdapter);
+
+			}catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+}
 
 }

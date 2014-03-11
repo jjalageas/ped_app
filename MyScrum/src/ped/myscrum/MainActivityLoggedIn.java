@@ -69,39 +69,33 @@ public class MainActivityLoggedIn extends Activity{
 		getActionBar().setHomeButtonEnabled(true);
 
 		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-				R.drawable.ic_drawer, //nav menu toggle icon
-				R.string.app_name, // nav drawer open - description for accessibility
-				R.string.app_name // nav drawer close - description for accessibility
+				R.drawable.ic_drawer, 
+				R.string.app_name,
+				R.string.app_name
 		) {
 			public void onDrawerClosed(View view) {
 				getActionBar().setTitle(mTitle);
-				// calling onPrepareOptionsMenu() to show action bar icons
 				invalidateOptionsMenu();
 			}
 
 			public void onDrawerOpened(View drawerView) {
 				getActionBar().setTitle(mDrawerTitle);
-				// calling onPrepareOptionsMenu() to hide action bar icons
 				invalidateOptionsMenu();
 			}
 		};
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 
 		if (savedInstanceState == null) {
-			// on first time display view for first nav item
 			displayView(0);
 		}
 	}
 
-	/**
-	 * Slide menu item click listener
-	 * */
+
 	private class SlideMenuClickListener implements
 			ListView.OnItemClickListener {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
-			// display view for selected nav drawer item
 			displayView(position);
 		}
 	}
@@ -114,11 +108,9 @@ public class MainActivityLoggedIn extends Activity{
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// toggle nav drawer on selecting action bar app icon/title
 		if (mDrawerToggle.onOptionsItemSelected(item)) {
 			return true;
 		}
-		// Handle action bar actions click
 		switch (item.getItemId()) {
 		case R.id.action_settings:
 			return true;
@@ -127,22 +119,16 @@ public class MainActivityLoggedIn extends Activity{
 		}
 	}
 
-	/* *
-	 * Called when invalidateOptionsMenu() is triggered
-	 */
+	
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		// if nav drawer is opened, hide the action items
 		boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-		menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
+		menu.findItem(R.id.action_settings).setVisible(false);
 		return super.onPrepareOptionsMenu(menu);
 	}
 
-	/**
-	 * Diplaying fragment view for selected nav drawer list item
-	 * */
+
 	private void displayView(int position) {
-		// update the main content by replacing fragments
 		Fragment fragment = null;
 		switch (position) {
 		case 0:
@@ -161,7 +147,7 @@ public class MainActivityLoggedIn extends Activity{
 		    fragment.setArguments(args);
 			break;
 		case 3:
-			fragment = new SignoutFragment();
+			this.finish();
 			break;			
 		default:
 			break;
@@ -172,13 +158,11 @@ public class MainActivityLoggedIn extends Activity{
 			fragmentManager.beginTransaction()
 					.replace(R.id.frame_container, fragment).commit();
 
-			// update selected item and title, then close the drawer
 			mDrawerList.setItemChecked(position, true);
 			mDrawerList.setSelection(position);
 			setTitle(navMenuTitles[position]);
 			mDrawerLayout.closeDrawer(mDrawerList);
 		} else {
-			// error in creating fragment
 			Log.e("MainActivity", "Error in creating fragment");
 		}
 	}
@@ -189,22 +173,16 @@ public class MainActivityLoggedIn extends Activity{
 		getActionBar().setTitle(mTitle);
 	}
 
-	/**
-	 * When using the ActionBarDrawerToggle, you must call it during
-	 * onPostCreate() and onConfigurationChanged()...
-	 */
 
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
-		// Sync the toggle state after onRestoreInstanceState has occurred.
 		mDrawerToggle.syncState();
 	}
 
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
-		// Pass any configuration change to the drawer toggls
 		mDrawerToggle.onConfigurationChanged(newConfig);
 	}
 

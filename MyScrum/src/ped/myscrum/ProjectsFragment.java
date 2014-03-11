@@ -86,15 +86,27 @@ public class ProjectsFragment extends Fragment {
 					break;
 				case 1:
 					fragment = new TeamFragment();
+					Bundle team_args = new Bundle();
+					team_args.putCharSequence("api_key", api_key);
+					team_args.putInt("project_id", groupPosition + 1);
+				    fragment.setArguments(team_args);
 					break;
 				case 2:
 					fragment = new BacklogFragment();
+					Bundle backlog_args = new Bundle();
+					backlog_args.putCharSequence("api_key", api_key);
+					backlog_args.putInt("project_id", groupPosition + 1);
+				    fragment.setArguments(backlog_args);
 					break;
 				case 3:
 					fragment = new SprintsFragment();
 					break;
 				case 4:
 					fragment = new TestsFragment();
+					Bundle tests_args = new Bundle();
+					tests_args.putCharSequence("api_key", api_key);
+					tests_args.putInt("project_id", groupPosition + 1);
+				    fragment.setArguments(tests_args);
 					break;			
 				default:
 					break;
@@ -105,7 +117,6 @@ public class ProjectsFragment extends Fragment {
 					fragmentManager.beginTransaction()
 					.replace(R.id.frame_container, fragment).commit();
 				} else {
-					// error in creating fragment
 					Log.e("MainActivity", "Error in creating fragment");
 				}
 				
