@@ -34,43 +34,37 @@ public class MainActivityLoggedIn extends Activity{
 	private TypedArray navMenuIcons;
 	private ArrayList<NavDrawerItem> navDrawerItems;
 	private NavDrawerListAdapter adapter;
+	private CharSequence apiKey;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.fragment_home);
 
+		Bundle b = getIntent().getExtras();
+		apiKey = b.getCharSequence("api_key");
+		
 		mTitle = mDrawerTitle = getTitle();
-
-		// load slide menu items
 		navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items_logged_in);
-
-		// nav drawer icons from resources
 		navMenuIcons = getResources()
 				.obtainTypedArray(R.array.nav_drawer_icons_logged_in);
 
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList = (ListView) findViewById(R.id.list_slidermenu);
-
 		navDrawerItems = new ArrayList<NavDrawerItem>();
 
-		// adding nav drawer items to array
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1)));
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1)));
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1)));
 		
-		// Recycle the typed array
 		navMenuIcons.recycle();
-
 		mDrawerList.setOnItemClickListener(new SlideMenuClickListener());
 
-		// setting the nav drawer list adapter
 		adapter = new NavDrawerListAdapter(getApplicationContext(),
 				navDrawerItems);
 		mDrawerList.setAdapter(adapter);
 
-		// enabling action bar app icon and behaving it as toggle button
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setHomeButtonEnabled(true);
 
@@ -156,9 +150,15 @@ public class MainActivityLoggedIn extends Activity{
 			break;
 		case 1:
 			fragment = new ProjectsFragment();
+			Bundle args_project = new Bundle();
+		    args_project.putCharSequence("api_key", apiKey);
+		    fragment.setArguments(args_project);
 			break;
 		case 2:
 			fragment = new AccountSettingsFragment();
+		    Bundle args = new Bundle();
+		    args.putCharSequence("api_key", apiKey);
+		    fragment.setArguments(args);
 			break;
 		case 3:
 			fragment = new SignoutFragment();
