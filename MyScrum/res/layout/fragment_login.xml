@@ -7,41 +7,32 @@
     android:orientation="vertical" >
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/key"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_marginBottom="147dp"
+        android:layout_centerVertical="true"
         android:ems="10"
-        android:inputType="textPassword"
-        android:text="@string/password" />
+        android:text="Enter API Key" >
 
-    <EditText
-        android:id="@+id/editText1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/editText2"
-        android:layout_alignParentLeft="true"
-        android:ems="10" 
-        android:text="@string/username"/>
-
-    <Button
-        android:id="@+id/signup_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/editText2"
-        android:layout_marginTop="42dp"
-        android:text="Sign up" />
+        <requestFocus />
+    </EditText>
 
     <Button
         android:id="@+id/login_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/signup_button"
-        android:layout_alignBottom="@+id/signup_button"
+        android:layout_below="@+id/key"
         android:layout_toLeftOf="@+id/signup_button"
         android:text="Log in" />
+
+    <Button
+        android:id="@+id/signup_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/login_button"
+        android:layout_alignBottom="@+id/login_button"
+        android:layout_alignParentRight="true"
+        android:text="Sign up" />
 
 </RelativeLayout>

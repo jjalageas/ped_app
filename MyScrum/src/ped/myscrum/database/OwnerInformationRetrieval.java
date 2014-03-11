@@ -62,7 +62,6 @@ public class OwnerInformationRetrieval extends AsyncTask<String, String, String>
 		lastName.setText("Last Name:     " + (CharSequence) parsedData.get("last_name"));
 		username.setText("Username:      " +(CharSequence) parsedData.get("username"));
 		email.setText("Email:               " + (CharSequence) parsedData.get("email"));
-        System.out.println("OK");
     }
 	
 }
