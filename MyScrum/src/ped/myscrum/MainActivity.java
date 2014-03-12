@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 import ped.myscrum.adapter.NavDrawerListAdapter;
 import ped.myscrum.model.NavDrawerItem;
-
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -123,6 +122,7 @@ public class MainActivity extends Activity {
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
+		@SuppressWarnings("unused")
 		boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
 		menu.findItem(R.id.action_settings).setVisible(false);
 		return super.onPrepareOptionsMenu(menu);

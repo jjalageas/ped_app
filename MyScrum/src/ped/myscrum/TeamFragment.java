@@ -55,6 +55,9 @@ public class TeamFragment extends Fragment {
 			@Override
 			public boolean onGroupClick(ExpandableListView parent, View v,
 					int groupPosition, long id) {
+				if(groupPosition == listDataHeader.size()-1){
+					getFragmentManager().popBackStackImmediate();
+				}
 				return false;
 			}
 		});
@@ -133,9 +136,9 @@ public class TeamFragment extends Fragment {
 			
 			for(int i=0; i<data.length(); i++)
 				listDataHeader.add(data.getJSONObject(i).getString("username"));
-		
+			listDataHeader.add("Back to Projects");
 			
-			for(int i=0; i< listDataHeader.size(); i++){
+			for(int i=0; i< listDataHeader.size()-1; i++){
 				List<String> project = new ArrayList<String>();
 				project.add(data.getJSONObject(i).getString("email"));
 				project.add(data.getJSONObject(i).getString("last_name"));

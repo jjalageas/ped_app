@@ -13,6 +13,7 @@ public class CreateUserStoryFragment extends Fragment{
 
 	public CreateUserStoryFragment(){}
 	
+	@SuppressWarnings("unused")
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
@@ -21,7 +22,7 @@ public class CreateUserStoryFragment extends Fragment{
         Button submit_user_story = (Button) rootView.findViewById(R.id.submit);
         EditText title = (EditText) rootView.findViewById(R.id.edit_title);
         EditText description = (EditText) rootView.findViewById(R.id.edit_description);
-        EditText difficulty = (EditText) rootView.findViewById(R.id.edit_difficulty);
+		EditText difficulty = (EditText) rootView.findViewById(R.id.edit_difficulty);
         EditText priority = (EditText) rootView.findViewById(R.id.edit_priority);
         return rootView;
     }

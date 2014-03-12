@@ -15,7 +15,6 @@ import org.json.JSONException;
 
 import ped.myscrum.adapter.ExpandableListAdapter;
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -38,7 +37,7 @@ public class BacklogFragment extends Fragment {
 	 public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	            Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		View rootView = inflater.inflate(R.layout.fragment_team, container, false);
+		View rootView = inflater.inflate(R.layout.fragment_backlog, container, false);
 
 		expListView = (ExpandableListView) rootView.findViewById(R.id.lvExp);
 		api_key = getArguments().getString("api_key");
@@ -54,6 +53,9 @@ public class BacklogFragment extends Fragment {
 			@Override
 			public boolean onGroupClick(ExpandableListView parent, View v,
 					int groupPosition, long id) {
+				if(groupPosition == listDataHeader.size()-1){
+					getFragmentManager().popBackStackImmediate();
+				}
 				return false;
 			}
 		});
@@ -132,8 +134,9 @@ public class BacklogFragment extends Fragment {
 			
 			for(int i=0; i<data.length(); i++)
 				listDataHeader.add("User Story #" + data.getJSONObject(i).getString("id"));
-		
-			for(int i=0; i< listDataHeader.size(); i++){
+			listDataHeader.add("Back to Projects");
+			
+			for(int i=0; i< listDataHeader.size()-1; i++){
 				List<String> project = new ArrayList<String>();
 				project.add(data.getJSONObject(i).getString("title"));
 				project.add(data.getJSONObject(i).getString("description"));

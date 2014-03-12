@@ -100,6 +100,10 @@ public class ProjectsFragment extends Fragment {
 					break;
 				case 3:
 					fragment = new SprintsFragment();
+					Bundle sprints_args = new Bundle();
+					sprints_args.putCharSequence("api_key", api_key);
+					sprints_args.putInt("project_id", groupPosition + 1);
+				    fragment.setArguments(sprints_args);
 					break;
 				case 4:
 					fragment = new TestsFragment();
@@ -115,7 +119,7 @@ public class ProjectsFragment extends Fragment {
 				if (fragment != null) {
 					FragmentManager fragmentManager = getFragmentManager();
 					fragmentManager.beginTransaction()
-					.replace(R.id.frame_container, fragment).commit();
+					.replace(R.id.frame_container, fragment).addToBackStack(String.valueOf(childPosition)).commit();
 				} else {
 					Log.e("MainActivity", "Error in creating fragment");
 				}

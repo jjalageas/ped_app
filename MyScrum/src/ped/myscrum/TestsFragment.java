@@ -38,7 +38,7 @@ public class TestsFragment extends Fragment {
 	 public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	            Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		View rootView = inflater.inflate(R.layout.fragment_team, container, false);
+		View rootView = inflater.inflate(R.layout.fragment_tests, container, false);
 
 		expListView = (ExpandableListView) rootView.findViewById(R.id.lvExp);
 		api_key = getArguments().getString("api_key");
@@ -54,6 +54,9 @@ public class TestsFragment extends Fragment {
 			@Override
 			public boolean onGroupClick(ExpandableListView parent, View v,
 					int groupPosition, long id) {
+				if(groupPosition == listDataHeader.size()-1){
+					getFragmentManager().popBackStackImmediate();
+				}
 				return false;
 			}
 		});
@@ -132,9 +135,9 @@ public class TestsFragment extends Fragment {
 			
 			for(int i=0; i<data.length(); i++)
 				listDataHeader.add("Test #" + data.getJSONObject(i).getString("id"));
-		
+			listDataHeader.add("Back to Projects");
 			
-			for(int i=0; i< listDataHeader.size(); i++){
+			for(int i=0; i< listDataHeader.size()-1; i++){
 				List<String> project = new ArrayList<String>();
 				project.add(data.getJSONObject(i).getString("title"));
 				project.add("User Story: " + data.getJSONObject(i).getString("user_story_id"));
