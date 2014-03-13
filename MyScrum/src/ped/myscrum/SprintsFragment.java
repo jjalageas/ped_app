@@ -79,8 +79,6 @@ public class SprintsFragment extends Fragment {
 					case 1:
 						break;
 					case 2:
-						break;
-					case 3:
 						fragment = new SprintsUserStoriesFragment();
 						Bundle sprints_args = new Bundle();
 						sprints_args.putCharSequence("api_key", api_key);
@@ -88,7 +86,7 @@ public class SprintsFragment extends Fragment {
 						sprints_args.putInt("sprint_id", sprint_ids.get(groupPosition));
 					    fragment.setArguments(sprints_args);
 						break;
-					case 4:
+					case 3:
 						fragment = new JobsFragment();
 						Bundle jobs_args = new Bundle();
 						jobs_args.putCharSequence("api_key", api_key);
@@ -96,7 +94,7 @@ public class SprintsFragment extends Fragment {
 						jobs_args.putInt("sprint_id", sprint_ids.get(groupPosition));
 					    fragment.setArguments(jobs_args);
 						break;
-					case 5:
+					case 4:
 						fragment = new ChartFragment();
 						break;
 					default:
@@ -178,7 +176,6 @@ public class SprintsFragment extends Fragment {
 				List<String> project = new ArrayList<String>();
 				project.add("Start Date: " + data.getJSONObject(i).getString("start_date"));
 				project.add("Duration: " + data.getJSONObject(i).getString("duration"));
-				project.add(data.getJSONObject(i).getString("info"));
 				project.add("User Stories");
 				project.add("Jobs");
 				project.add("Charts");
