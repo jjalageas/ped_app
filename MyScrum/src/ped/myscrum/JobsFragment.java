@@ -16,10 +16,8 @@ import org.json.JSONException;
 
 import ped.myscrum.adapter.ExpandableListAdapter;
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +25,7 @@ import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ExpandableListView.OnGroupClickListener;
 
-public class SprintsFragment extends Fragment {
+public class JobsFragment extends Fragment {
 
 	ExpandableListAdapter listAdapter;
 	ExpandableListView expListView;
@@ -35,7 +33,7 @@ public class SprintsFragment extends Fragment {
 	HashMap<String, List<String>> listDataChild;
 	private CharSequence api_key;
 	private int project_id;
-	private List<Integer> sprint_ids;
+	private int sprint_id;
 
 	@Override
 	 public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -46,12 +44,12 @@ public class SprintsFragment extends Fragment {
 		expListView = (ExpandableListView) rootView.findViewById(R.id.lvExp);
 		api_key = getArguments().getString("api_key");
 		project_id = getArguments().getInt("project_id");
+		sprint_id = getArguments().getInt("sprint_id");
 		
 		listDataHeader = new ArrayList<String>();
 		listDataChild = new HashMap<String, List<String>>();
-		sprint_ids = new ArrayList<Integer>();
 		
-		new SprintsInformationRetrieval(listDataHeader, listDataChild, expListView).execute("http://10.0.2.2:3000/api/owner/projects/" + project_id + "/sprints?api_key=" + api_key);
+		new JobsRetrieval(listDataHeader, listDataChild, expListView).execute("http://10.0.2.2:3000/api/owner/projects/" + project_id + "/sprints/" + sprint_id + "/jobs?api_key=" + api_key);
 		
 		expListView.setOnGroupClickListener(new OnGroupClickListener() {
 
@@ -72,44 +70,18 @@ public class SprintsFragment extends Fragment {
 			@Override
 			public boolean onChildClick(ExpandableListView parent, View v,
 					int groupPosition, int childPosition, long id) {
-				Fragment fragment = null;
 				switch (childPosition) {
 					case 0:
 						break;
 					case 1:
-						break;
+						break;	
 					case 2:
 						break;
 					case 3:
-						fragment = new SprintsUserStoriesFragment();
-						Bundle sprints_args = new Bundle();
-						sprints_args.putCharSequence("api_key", api_key);
-						sprints_args.putInt("project_id", project_id);
-						sprints_args.putInt("sprint_id", sprint_ids.get(groupPosition));
-					    fragment.setArguments(sprints_args);
-						break;
-					case 4:
-						fragment = new JobsFragment();
-						Bundle jobs_args = new Bundle();
-						jobs_args.putCharSequence("api_key", api_key);
-						jobs_args.putInt("project_id", project_id);
-						jobs_args.putInt("sprint_id", sprint_ids.get(groupPosition));
-					    fragment.setArguments(jobs_args);
-						break;
-					case 5:
-						fragment = new ChartFragment();
 						break;
 					default:
 						break;
 				}
-				if (fragment != null) {
-					FragmentManager fragmentManager = getFragmentManager();
-					fragmentManager.beginTransaction()
-					.replace(R.id.frame_container, fragment).addToBackStack(String.valueOf(childPosition)).commit();
-				} else {
-					Log.e("MainActivity", "Error in creating fragment");
-				}
-			
 				return false;
 			}
 		});
@@ -118,7 +90,7 @@ public class SprintsFragment extends Fragment {
 
 	
 
-	private class SprintsInformationRetrieval extends AsyncTask<String, String, String>{
+	private class JobsRetrieval extends AsyncTask<String, String, String>{
 		
 		private List<String> listDataHeader;
 		private HashMap<String, List<String>> listDataChild;
@@ -127,7 +99,7 @@ public class SprintsFragment extends Fragment {
 
 
 		
-		public SprintsInformationRetrieval(List<String> listHeader, HashMap<String, List<String>> listChild, ExpandableListView listView){
+		public JobsRetrieval(List<String> listHeader, HashMap<String, List<String>> listChild, ExpandableListView listView){
 			listDataHeader = listHeader;
 			listDataChild = listChild;
 			expListView = listView;
@@ -167,21 +139,17 @@ public class SprintsFragment extends Fragment {
 			JSONArray data;
 			data = new JSONArray(result);
 			
-			for(int i=0; i<data.length(); i++){
-				listDataHeader.add("Sprint #" + (i+1));
-				sprint_ids.add(Integer.valueOf(data.getJSONObject(i).getString("id").toString()));
-			}
-			listDataHeader.add("Back to Projects");
+			for(int i=0; i<data.length(); i++)
+				listDataHeader.add("Job #" + data.getJSONObject(i).getString("id"));
+			listDataHeader.add("Back to Sprints");
 		
 			
 			for(int i=0; i< listDataHeader.size()-1; i++){
 				List<String> project = new ArrayList<String>();
-				project.add("Start Date: " + data.getJSONObject(i).getString("start_date"));
-				project.add("Duration: " + data.getJSONObject(i).getString("duration"));
-				project.add(data.getJSONObject(i).getString("info"));
-				project.add("User Stories");
-				project.add("Jobs");
-				project.add("Charts");
+				project.add(data.getJSONObject(i).getString("title"));
+				project.add(data.getJSONObject(i).getString("description"));
+				project.add("Difficulty: " + data.getJSONObject(i).getString("difficulty"));
+				project.add("Finished: " + data.getJSONObject(i).getString("finished"));
 				listDataChild.put(listDataHeader.get(i), project);
 			}
 			} catch (JSONException e) {
@@ -189,7 +157,7 @@ public class SprintsFragment extends Fragment {
 			}
 
 
-			listAdapter = new ExpandableListAdapter(SprintsFragment.this, listDataHeader, listDataChild);
+			listAdapter = new ExpandableListAdapter(JobsFragment.this, listDataHeader, listDataChild);
 			this.expListView.setAdapter(listAdapter);
 			
 	    }
