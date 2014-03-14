@@ -3,8 +3,15 @@ package ped.myscrum;
 import info.androidhive.slidingmenu.R;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.StreamCorruptedException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -15,7 +22,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import ped.myscrum.adapter.ExpandableListAdapter;
+import ped.myscrum.serialization.Backlog;
+import ped.myscrum.serialization.BacklogContent;
 import android.app.Fragment;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -34,6 +46,7 @@ public class SprintsUserStoriesFragment extends Fragment {
 	private CharSequence api_key;
 	private int project_id;
 	private int sprint_id;
+	Backlog backlog;
 
 	@Override
 	 public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,7 +62,49 @@ public class SprintsUserStoriesFragment extends Fragment {
 		listDataHeader = new ArrayList<String>();
 		listDataChild = new HashMap<String, List<String>>();
 		
-		new SprintsInformationRetrieval(listDataHeader, listDataChild, expListView).execute("http://10.0.2.2:3000/api/owner/projects/" + project_id + "/sprints/" + sprint_id + "/user_stories?api_key=" + api_key);
+		ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+		
+		if(activeNetworkInfo != null && activeNetworkInfo.isConnected()){
+			new SprintsInformationRetrieval(listDataHeader, listDataChild, expListView).execute("http://10.0.2.2:3000/api/owner/projects/" + project_id + "/sprints/" + sprint_id + "/user_stories?api_key=" + api_key);
+		}
+		else{
+			try
+			{
+				backlog = load_data(new File(this.getActivity().getFilesDir() + "sprint_user_stories" + project_id + "_" + sprint_id +".bin"));
+				int ctr = 0;
+				
+				listDataHeader = new ArrayList<String>();
+				listDataChild = new HashMap<String, List<String>>();
+				
+				for(BacklogContent t: backlog.getBacklog()){
+					
+					List<String> project = new ArrayList<String>();
+					
+					listDataHeader.add(t.getId());
+					project.add(t.getTitle());
+					project.add(t.getDescription());
+					project.add(t.getPriority());
+					project.add(t.getDifficulty());
+					project.add(t.getFinished());
+					project.add(t.getValidated());
+					listDataChild.put(listDataHeader.get(ctr), project);
+					
+					ctr++;
+				}
+				listDataHeader.add("Back to Projects");
+				
+				listAdapter = new ExpandableListAdapter(SprintsUserStoriesFragment.this, listDataHeader, listDataChild);
+				this.expListView.setAdapter(listAdapter);
+					
+
+			}catch(Exception ex)
+			{
+				ex.printStackTrace();
+			}
+		}
+		
+		
 		
 		expListView.setOnGroupClickListener(new OnGroupClickListener() {
 
@@ -88,7 +143,21 @@ public class SprintsUserStoriesFragment extends Fragment {
 		return rootView;
 	}
 
-	
+	public void save_data() throws FileNotFoundException, IOException{
+		File save = new File(this.getActivity().getFilesDir() + "sprint_user_stories" + project_id + "_" + sprint_id +".bin");
+		save.createNewFile();
+		ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(save));
+		oos.writeObject(backlog);
+		oos.flush();
+		oos.close();
+	}
+
+	@SuppressWarnings("resource")
+	public Backlog load_data(File f) throws StreamCorruptedException, FileNotFoundException, IOException, ClassNotFoundException{
+		ObjectInputStream ois = new ObjectInputStream(new FileInputStream(f));
+		backlog = (Backlog) ois.readObject();
+		return backlog;
+	}
 
 	private class SprintsInformationRetrieval extends AsyncTask<String, String, String>{
 		
@@ -134,13 +203,16 @@ public class SprintsUserStoriesFragment extends Fragment {
 	    protected void onPostExecute(String result) {
 	        
 			super.onPostExecute(result);
+			backlog = new Backlog();
 	      
 			try{
 			JSONArray data;
 			data = new JSONArray(result);
 			
-			for(int i=0; i<data.length(); i++)
+			for(int i=0; i<data.length(); i++){
 				listDataHeader.add("User Story #" + data.getJSONObject(i).getString("id"));
+				backlog.getBacklog().add(new BacklogContent("User Story #" + (String) data.getJSONObject(i).getString("id")));
+			}
 			listDataHeader.add("Back to Sprints");
 		
 			
@@ -150,9 +222,36 @@ public class SprintsUserStoriesFragment extends Fragment {
 				project.add(data.getJSONObject(i).getString("description"));
 				project.add("Priority: " + data.getJSONObject(i).getString("priority"));
 				project.add("Difficulty: " + data.getJSONObject(i).getString("difficulty"));
-				project.add("Finished: " + data.getJSONObject(i).getString("finished"));
-				project.add("Validated: " + data.getJSONObject(i).getString("valid"));
+
+				if(data.getJSONObject(i).getString("finished").equals("null"))
+					project.add("Finished: " + "No");
+				else
+					project.add("Finished: " + "Yes");
+				
+				if(data.getJSONObject(i).getString("valid").equals("null"))
+					project.add("Validated: " + "No");
+				else
+					project.add("Validated: " + "Yes");
 				listDataChild.put(listDataHeader.get(i), project);
+				
+				listDataChild.put(listDataHeader.get(i), project);
+				
+				
+				backlog.getBacklog().get(i).setTitle(data.getJSONObject(i).getString("title"));
+				backlog.getBacklog().get(i).setDescription(data.getJSONObject(i).getString("description"));
+				backlog.getBacklog().get(i).setPriority("Priority: " + data.getJSONObject(i).getString("priority"));
+				backlog.getBacklog().get(i).setDifficulty("Difficulty: " + data.getJSONObject(i).getString("difficulty"));
+				
+				if(data.getJSONObject(i).getString("finished").equals("null"))
+					backlog.getBacklog().get(i).setFinished("Finished: No");
+				else
+					backlog.getBacklog().get(i).setFinished("Finished: Yes");
+				if(data.getJSONObject(i).getString("valid").equals("null"))
+					backlog.getBacklog().get(i).setValidated("Validated: No");
+				else
+					backlog.getBacklog().get(i).setValidated("Validated: Yes");
+				
+				
 			}
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -161,6 +260,12 @@ public class SprintsUserStoriesFragment extends Fragment {
 
 			listAdapter = new ExpandableListAdapter(SprintsUserStoriesFragment.this, listDataHeader, listDataChild);
 			this.expListView.setAdapter(listAdapter);
+			
+			try {
+				save_data();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			
 	    }
 		
