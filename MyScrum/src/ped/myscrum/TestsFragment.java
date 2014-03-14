@@ -218,10 +218,11 @@ public class TestsFragment extends Fragment {
 
 				if(data.getJSONObject(i).getString("state").equals("not_tested"))
 					project.add("Not Tested");
-				else if(data.getJSONObject(i).getString("state").equals("success"))
-					project.add("Success");
-				else
-					project.add("Failed");
+				else 
+					if(data.getJSONObject(i).getString("state").equals("success"))
+						project.add("Success");
+					else
+						project.add("Failed");
 				
 				listDataChild.put(listDataHeader.get(i), project);
 
@@ -230,10 +231,11 @@ public class TestsFragment extends Fragment {
 				
 				if(data.getJSONObject(i).getString("state").equals("not_tested"))
 					tests.getTests().get(i).setState("Not Tested");
-				else if(data.getJSONObject(i).getString("state").equals("success"))
-					tests.getTests().get(i).setState("Success");
-				else
-					tests.getTests().get(i).setState("Failed");
+				else 
+					if(data.getJSONObject(i).getString("state").equals("success"))
+						tests.getTests().get(i).setState("Success");
+					else
+						tests.getTests().get(i).setState("Failed");
 
 				
 			}

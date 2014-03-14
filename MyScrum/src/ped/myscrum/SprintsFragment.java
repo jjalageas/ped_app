@@ -70,8 +70,6 @@ public class SprintsFragment extends Fragment {
 		
 		if(activeNetworkInfo != null && activeNetworkInfo.isConnected()){
 			new SprintsInformationRetrieval(listDataHeader, listDataChild, expListView).execute("http://10.0.2.2:3000/api/owner/projects/" + project_id + "/sprints?api_key=" + api_key);
-			for(int i: sprint_ids)
-				System.out.println(i);
 		}
 		else{
 			try
@@ -257,7 +255,7 @@ public class SprintsFragment extends Fragment {
 				project.add("Charts");
 				listDataChild.put(listDataHeader.get(i), project);
 				
-				sprints.getSprints().get(i).setStartDate("Start Date: " + data.getJSONObject(i).getString("start_date"));
+				sprints.getSprints().get(i).setStartDate("Start Date: " + data.getJSONObject(i).getString("start_date").substring(0, 10));
 				sprints.getSprints().get(i).setDuration("Duration: " + data.getJSONObject(i).getString("duration"));
 				sprints.getSprints().get(i).setIdNum(Integer.valueOf(data.getJSONObject(i).getString("id").toString()));
 			}

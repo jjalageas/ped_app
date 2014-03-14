@@ -71,7 +71,7 @@ public class JobsFragment extends Fragment {
 		else{
 			try
 			{
-				jobs = load_data(new File(this.getActivity().getFilesDir() + "backlog_" + project_id + "_" + sprint_id + ".bin"));
+				jobs = load_data(new File(this.getActivity().getFilesDir() + "jobs_" + project_id + "_" + sprint_id + ".bin"));
 				int ctr = 0;
 				
 				listDataHeader = new ArrayList<String>();
@@ -219,10 +219,13 @@ public class JobsFragment extends Fragment {
 				project.add(data.getJSONObject(i).getString("title"));
 				project.add(data.getJSONObject(i).getString("description"));
 				project.add("Difficulty: " + data.getJSONObject(i).getString("difficulty"));
-				if(data.getJSONObject(i).getString("finished").equals(null))
-					project.add("Finished: No");
-				else
-					project.add("Finished: Yes");
+				if(data.getJSONObject(i).getString("status").equals("todo"))
+					project.add("Status: To Do");
+				else 
+					if(data.getJSONObject(i).getString("status").equals("done"))
+						project.add("Status: Done");
+					else 
+						project.add("Status: In Progress");
 				listDataChild.put(listDataHeader.get(i), project);
 				
 				
@@ -230,10 +233,13 @@ public class JobsFragment extends Fragment {
 				jobs.getJobs().get(i).setDescription(data.getJSONObject(i).getString("description"));
 				jobs.getJobs().get(i).setDifficulty("Difficulty: " + data.getJSONObject(i).getString("difficulty"));
 				
-				if(data.getJSONObject(i).getString("finished").equals("null"))
-					jobs.getJobs().get(i).setFinished("Finished: No");
-				else
-					jobs.getJobs().get(i).setFinished("Finished: Yes");
+				if(data.getJSONObject(i).getString("status").equals("todo"))
+					jobs.getJobs().get(i).setFinished("Status: To Do");
+				else 
+					if(data.getJSONObject(i).getString("status").equals("done"))
+						jobs.getJobs().get(i).setFinished("Status: Done");
+					else 
+						project.add("Status: In Progress");
 				
 			}
 			} catch (JSONException e) {
