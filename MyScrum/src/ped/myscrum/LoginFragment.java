@@ -48,7 +48,6 @@ public class LoginFragment extends Fragment{
 				
 				AsyncTask<String, String, String> log = new Login(stringApiKey, apiKey).execute("http://10.0.2.2:3000/api/owner/profile/api?api_key=" + stringApiKey);
 				
-				//startLoginActivity(stringApiKey);
 			}
 		});
          
@@ -103,17 +102,14 @@ public class LoginFragment extends Fragment{
 	    protected void onPostExecute(String result) {
 	        
 			super.onPostExecute(result);
-			String key_tmp = result.substring(2, result.length()-1);
-			if(key.equals(key_tmp))
-				startLoginActivity(key);
-			else
+			if(result.length()<key.length())
 				text.setText("Invalid API Key");
-			
-		
-			
-			
-			
-			
+			else{
+				String key_tmp = result.substring(2, result.length()-1);
+				if(key.equals(key_tmp))
+					startLoginActivity(key);
+			}
+
 		}
 	}
 	
