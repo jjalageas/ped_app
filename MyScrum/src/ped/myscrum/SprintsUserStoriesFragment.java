@@ -52,7 +52,7 @@ public class SprintsUserStoriesFragment extends Fragment {
 	 public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	            Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		View rootView = inflater.inflate(R.layout.fragment_sprints, container, false);
+		View rootView = inflater.inflate(R.layout.fragment_backlog, container, false);
 
 		expListView = (ExpandableListView) rootView.findViewById(R.id.lvExp);
 		api_key = getArguments().getString("api_key");
@@ -62,18 +62,23 @@ public class SprintsUserStoriesFragment extends Fragment {
 		listDataHeader = new ArrayList<String>();
 		listDataChild = new HashMap<String, List<String>>();
 		
+
 		ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
 		
 		if(activeNetworkInfo != null && activeNetworkInfo.isConnected()){
-			new SprintsInformationRetrieval(listDataHeader, listDataChild, expListView).execute("http://10.0.2.2:3000/api/owner/projects/" + project_id + "/sprints/" + sprint_id + "/user_stories?api_key=" + api_key);
+			new BacklogInformationRetrieval(listDataHeader, listDataChild, expListView).execute("http://10.0.2.2:3000/api/owner/projects/" + project_id + "/sprints/" + sprint_id + "/user_stories?api_key=" + api_key);		
 		}
+		
 		else{
 			try
 			{
-				backlog = load_data(new File(this.getActivity().getFilesDir() + "sprint_user_stories" + project_id + "_" + sprint_id +".bin"));
+				backlog = load_data(new File(this.getActivity().getFilesDir() + "backlog_" + project_id + sprint_id +".bin"));
 				int ctr = 0;
 				
+				System.out.println("//////////////////:");
+				System.out.println(backlog.getBacklog().size());
+				System.out.println(backlog.getBacklog().get(0).getDescription());
 				listDataHeader = new ArrayList<String>();
 				listDataChild = new HashMap<String, List<String>>();
 				
@@ -92,7 +97,7 @@ public class SprintsUserStoriesFragment extends Fragment {
 					
 					ctr++;
 				}
-				listDataHeader.add("Back to Projects");
+				listDataHeader.add("Back to Sprints");
 				
 				listAdapter = new ExpandableListAdapter(SprintsUserStoriesFragment.this, listDataHeader, listDataChild);
 				this.expListView.setAdapter(listAdapter);
@@ -103,8 +108,6 @@ public class SprintsUserStoriesFragment extends Fragment {
 				ex.printStackTrace();
 			}
 		}
-		
-		
 		
 		expListView.setOnGroupClickListener(new OnGroupClickListener() {
 
@@ -129,11 +132,7 @@ public class SprintsUserStoriesFragment extends Fragment {
 					case 0:
 						break;
 					case 1:
-						break;	
-					case 2:
-						break;
-					case 3:
-						break;
+						break;		
 					default:
 						break;
 				}
@@ -144,7 +143,7 @@ public class SprintsUserStoriesFragment extends Fragment {
 	}
 
 	public void save_data() throws FileNotFoundException, IOException{
-		File save = new File(this.getActivity().getFilesDir() + "sprint_user_stories" + project_id + "_" + sprint_id +".bin");
+		File save = new File(this.getActivity().getFilesDir() + "backlog_" + project_id + sprint_id  +".bin");
 		save.createNewFile();
 		ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(save));
 		oos.writeObject(backlog);
@@ -159,7 +158,7 @@ public class SprintsUserStoriesFragment extends Fragment {
 		return backlog;
 	}
 
-	private class SprintsInformationRetrieval extends AsyncTask<String, String, String>{
+	private class BacklogInformationRetrieval extends AsyncTask<String, String, String>{
 		
 		private List<String> listDataHeader;
 		private HashMap<String, List<String>> listDataChild;
@@ -168,7 +167,7 @@ public class SprintsUserStoriesFragment extends Fragment {
 
 
 		
-		public SprintsInformationRetrieval(List<String> listHeader, HashMap<String, List<String>> listChild, ExpandableListView listView){
+		public BacklogInformationRetrieval(List<String> listHeader, HashMap<String, List<String>> listChild, ExpandableListView listView){
 			listDataHeader = listHeader;
 			listDataChild = listChild;
 			expListView = listView;
@@ -214,15 +213,16 @@ public class SprintsUserStoriesFragment extends Fragment {
 				backlog.getBacklog().add(new BacklogContent("User Story #" + (String) data.getJSONObject(i).getString("id")));
 			}
 			listDataHeader.add("Back to Sprints");
-		
 			
 			for(int i=0; i< listDataHeader.size()-1; i++){
+				
 				List<String> project = new ArrayList<String>();
+				
 				project.add(data.getJSONObject(i).getString("title"));
 				project.add(data.getJSONObject(i).getString("description"));
 				project.add("Priority: " + data.getJSONObject(i).getString("priority"));
 				project.add("Difficulty: " + data.getJSONObject(i).getString("difficulty"));
-
+				
 				if(data.getJSONObject(i).getString("finished").equals("null"))
 					project.add("Finished: " + "No");
 				else
@@ -232,8 +232,6 @@ public class SprintsUserStoriesFragment extends Fragment {
 					project.add("Validated: " + "No");
 				else
 					project.add("Validated: " + "Yes");
-				listDataChild.put(listDataHeader.get(i), project);
-				
 				listDataChild.put(listDataHeader.get(i), project);
 				
 				
@@ -250,8 +248,7 @@ public class SprintsUserStoriesFragment extends Fragment {
 					backlog.getBacklog().get(i).setValidated("Validated: No");
 				else
 					backlog.getBacklog().get(i).setValidated("Validated: Yes");
-				
-				
+
 			}
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -276,3 +273,4 @@ public class SprintsUserStoriesFragment extends Fragment {
 }
 
 	
+

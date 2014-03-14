@@ -70,6 +70,8 @@ public class SprintsFragment extends Fragment {
 		
 		if(activeNetworkInfo != null && activeNetworkInfo.isConnected()){
 			new SprintsInformationRetrieval(listDataHeader, listDataChild, expListView).execute("http://10.0.2.2:3000/api/owner/projects/" + project_id + "/sprints?api_key=" + api_key);
+			for(int i: sprint_ids)
+				System.out.println(i);
 		}
 		else{
 			try
@@ -79,6 +81,7 @@ public class SprintsFragment extends Fragment {
 				
 				listDataHeader = new ArrayList<String>();
 				listDataChild = new HashMap<String, List<String>>();
+				sprint_ids = new ArrayList<Integer>();
 				
 				for(SprintContent t: sprints.getSprints()){
 					
@@ -91,6 +94,8 @@ public class SprintsFragment extends Fragment {
 					project.add("Jobs");
 					project.add("Charts");
 					listDataChild.put(listDataHeader.get(ctr), project);
+					
+					sprint_ids.add(t.getIdNum());
 					
 					ctr++;
 				}
@@ -137,6 +142,8 @@ public class SprintsFragment extends Fragment {
 						sprints_args.putCharSequence("api_key", api_key);
 						sprints_args.putInt("project_id", project_id);
 						sprints_args.putInt("sprint_id", sprint_ids.get(groupPosition));
+						System.out.println("///////////////////");
+						System.out.println(sprint_ids.get(groupPosition));
 					    fragment.setArguments(sprints_args);
 						break;
 					case 3:
@@ -252,7 +259,7 @@ public class SprintsFragment extends Fragment {
 				
 				sprints.getSprints().get(i).setStartDate("Start Date: " + data.getJSONObject(i).getString("start_date"));
 				sprints.getSprints().get(i).setDuration("Duration: " + data.getJSONObject(i).getString("duration"));
-				
+				sprints.getSprints().get(i).setIdNum(Integer.valueOf(data.getJSONObject(i).getString("id").toString()));
 			}
 			} catch (JSONException e) {
 				e.printStackTrace();

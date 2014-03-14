@@ -9,6 +9,7 @@ public class SprintContent implements Serializable{
 	private String id;
 	private String start_date;
 	private String duration;
+	private int id_num;
 	
 	public SprintContent(String id){
 		this.id = id;
@@ -26,6 +27,10 @@ public class SprintContent implements Serializable{
 		return duration;
 	}
 	
+	public int getIdNum(){
+		return id_num;
+	}
+	
 	public void setId(String s){
 		id = s;
 	}
@@ -37,4 +42,9 @@ public class SprintContent implements Serializable{
 	public void setDuration(String s){
 		duration = s;
 	}
+	
+	public void setIdNum(int i){
+		id_num = i;
+	}
+	
 }

@@ -2,8 +2,18 @@
 package ped.myscrum;
 
 import info.androidhive.slidingmenu.R;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+import org.json.JSONArray;
+
 import android.app.Fragment;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.view.LayoutInflater;
@@ -32,9 +42,13 @@ public class LoginFragment extends Fragment{
         loginButton.setOnClickListener(new OnClickListener() {			
 			@Override
 			public void onClick(View v) {
+				
 				Editable key = apiKey.getText();
 				String stringApiKey = key.toString();
-				startLoginActivity(stringApiKey);
+				
+				AsyncTask<String, String, String> log = new Login(stringApiKey, apiKey).execute("http://10.0.2.2:3000/api/owner/profile/api?api_key=" + stringApiKey);
+				
+				//startLoginActivity(stringApiKey);
 			}
 		});
          
@@ -49,6 +63,59 @@ public class LoginFragment extends Fragment{
     	intent.putExtras(b);
     	startActivity(intent);
     }
+	
+	private class Login extends AsyncTask<String, String, String>{
+		
+		private String key;
+		private EditText text;
+
+		
+		public Login(String s, EditText et){
+			key = s;
+			text = et;
+		}
+		
+		
+		@Override
+		protected String doInBackground(String... url){
+			String result = " ";
+			URL url_init;
+			HttpURLConnection conn;
+			BufferedReader rd;
+			String line;
+			try{
+			url_init = new URL(url[0]);
+			conn = (HttpURLConnection) url_init.openConnection();
+			conn.setRequestMethod("GET");
+			rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			while ((line = rd.readLine()) != null) {
+				result += line;
+			}
+			rd.close();
+			}catch (IOException e) {
+				e.printStackTrace();
+			}
+			return result;
+		}
+		
+		
+		@Override
+	    protected void onPostExecute(String result) {
+	        
+			super.onPostExecute(result);
+			String key_tmp = result.substring(2, result.length()-1);
+			if(key.equals(key_tmp))
+				startLoginActivity(key);
+			else
+				text.setText("Invalid API Key");
+			
+		
+			
+			
+			
+			
+		}
+	}
 	
 	
 }
