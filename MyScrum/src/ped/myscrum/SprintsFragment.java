@@ -250,7 +250,7 @@ public class SprintsFragment extends Fragment {
 			
 			for(int i=0; i< listDataHeader.size()-1; i++){
 				List<String> project = new ArrayList<String>();
-				project.add("Start Date: " + data.getJSONObject(i).getString("start_date"));
+				project.add("Start Date: " + data.getJSONObject(i).getString("start_date").substring(0, 10));
 				project.add("Duration: " + data.getJSONObject(i).getString("duration"));
 				project.add("User Stories");
 				project.add("Jobs");

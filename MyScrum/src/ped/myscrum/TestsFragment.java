@@ -215,13 +215,26 @@ public class TestsFragment extends Fragment {
 				List<String> project = new ArrayList<String>();
 				project.add(data.getJSONObject(i).getString("title"));
 				project.add("User Story: " + data.getJSONObject(i).getString("user_story_id"));
-				project.add(data.getJSONObject(i).getString("state"));
-				listDataChild.put(listDataHeader.get(i), project);
+
+				if(data.getJSONObject(i).getString("state").equals("not_tested"))
+					project.add("Not Tested");
+				else if(data.getJSONObject(i).getString("state").equals("success"))
+					project.add("Success");
+				else
+					project.add("Failed");
 				
+				listDataChild.put(listDataHeader.get(i), project);
+
 				tests.getTests().get(i).setTitle(data.getJSONObject(i).getString("title"));
 				tests.getTests().get(i).setUserStoryId(data.getJSONObject(i).getString("user_story_id"));
-				tests.getTests().get(i).setState(data.getJSONObject(i).getString("state"));
 				
+				if(data.getJSONObject(i).getString("state").equals("not_tested"))
+					tests.getTests().get(i).setState("Not Tested");
+				else if(data.getJSONObject(i).getString("state").equals("success"))
+					tests.getTests().get(i).setState("Success");
+				else
+					tests.getTests().get(i).setState("Failed");
+
 				
 			}
 			} catch (JSONException e) {

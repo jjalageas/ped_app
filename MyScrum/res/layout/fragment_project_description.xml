@@ -6,15 +6,6 @@
     android:background="@drawable/index_plain"
     android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:textColor="#FFFFFF"
-        android:text="" />
-
     <Button
         android:id="@+id/back"
         android:layout_width="wrap_content"
@@ -24,5 +15,23 @@
         android:layout_marginBottom="17dp"
         android:layout_marginRight="17dp"
         android:text="Back to Projects" />
+
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="47dp"
+        android:layout_marginTop="78dp"
+        android:textColor="#FFFFFF" />
+
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:textColor="#FFFFFF" />
 
 </RelativeLayout>
