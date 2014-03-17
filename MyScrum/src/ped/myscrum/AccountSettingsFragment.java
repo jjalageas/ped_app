@@ -18,6 +18,7 @@ import java.util.Map;
 
 import ped.myscrum.serialization.AccountSettings;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -25,7 +26,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.json.parsers.JSONParser;
@@ -50,6 +53,17 @@ public class AccountSettingsFragment extends Fragment{
 		TextView firstname = (TextView) rootView.findViewById(R.id.first_name);
 		TextView lastname = (TextView) rootView.findViewById(R.id.last_name);
 		TextView email = (TextView) rootView.findViewById(R.id.email);
+		Button edit = (Button) rootView.findViewById(R.id.edit);
+		
+		edit.setOnClickListener(new OnClickListener() {	
+			@Override
+			public void onClick(View v) {
+				Fragment fragment = new EditSettingsFragment();
+				FragmentManager fragmentManager = getFragmentManager();
+				fragmentManager.beginTransaction()
+				.replace(R.id.frame_container, fragment).commit();
+			}
+		});
 
 		ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();

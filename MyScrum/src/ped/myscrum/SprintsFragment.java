@@ -97,6 +97,7 @@ public class SprintsFragment extends Fragment {
 					
 					ctr++;
 				}
+				listDataHeader.add("Create New Sprint");
 				listDataHeader.add("Back to Projects");
 				
 				listAdapter = new ExpandableListAdapter(SprintsFragment.this, listDataHeader, listDataChild);
@@ -114,9 +115,21 @@ public class SprintsFragment extends Fragment {
 			@Override
 			public boolean onGroupClick(ExpandableListView parent, View v,
 					int groupPosition, long id) {
+				Fragment fragment;
 				if(groupPosition == listDataHeader.size()-1){
 					getFragmentManager().popBackStackImmediate();
 				}
+				else
+					if(groupPosition == listDataHeader.size()-2){
+						fragment = new CreateSprintFragment();
+						Bundle sprints_args = new Bundle();
+						sprints_args.putCharSequence("api_key", api_key);
+						sprints_args.putInt("project_id", project_id);
+						fragment.setArguments(sprints_args);
+						FragmentManager fragmentManager = getFragmentManager();
+						fragmentManager.beginTransaction()
+						.replace(R.id.frame_container, fragment).commit();
+					}
 				return false;
 			}
 		});
@@ -140,8 +153,6 @@ public class SprintsFragment extends Fragment {
 						sprints_args.putCharSequence("api_key", api_key);
 						sprints_args.putInt("project_id", project_id);
 						sprints_args.putInt("sprint_id", sprint_ids.get(groupPosition));
-						System.out.println("///////////////////");
-						System.out.println(sprint_ids.get(groupPosition));
 					    fragment.setArguments(sprints_args);
 						break;
 					case 3:
@@ -243,10 +254,11 @@ public class SprintsFragment extends Fragment {
 				sprint_ids.add(Integer.valueOf(data.getJSONObject(i).getString("id").toString()));
 				sprints.getSprints().add(new SprintContent("Sprint #" + String.valueOf(i+1)));
 			}
+			listDataHeader.add("Create New Sprint");
 			listDataHeader.add("Back to Projects");
 		
 			
-			for(int i=0; i< listDataHeader.size()-1; i++){
+			for(int i=0; i< listDataHeader.size()-2; i++){
 				List<String> project = new ArrayList<String>();
 				project.add("Start Date: " + data.getJSONObject(i).getString("start_date").substring(0, 10));
 				project.add("Duration: " + data.getJSONObject(i).getString("duration"));

@@ -26,6 +26,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -46,16 +47,16 @@ public class DescriptionFragment extends Fragment{
 		project_id = getArguments().getInt("project_id");
 
 		View rootView = inflater.inflate(R.layout.fragment_project_description, container, false);
-		back = (Button) rootView.findViewById(R.id.back);  
+	/*	back = (Button) rootView.findViewById(R.id.back);  
 
 		back.setOnClickListener(new OnClickListener() {			
 			@Override
 			public void onClick(View v) {
 				getFragmentManager().popBackStackImmediate();
 			}
-		});
+		});*/
 
-		TextView description = (TextView) rootView.findViewById(R.id.description);
+		WebView description = (WebView) rootView.findViewById(R.id.description);
 		
 		
 		ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -71,7 +72,7 @@ public class DescriptionFragment extends Fragment{
 			{
 				pd = load_data(new File(this.getActivity().getFilesDir() + "description" + project_id + ".bin"));
 				String result = pd.getDescritpion();
-				description.setText(result);
+				description.loadData(result, "text/html", "utf-8");
 			}catch(Exception ex)
 			{
 				ex.printStackTrace();
@@ -102,10 +103,10 @@ public class DescriptionFragment extends Fragment{
 	
 	private class DescriptionRetrieval extends AsyncTask<String, String, String>{
 
-		private TextView description;
+		private WebView description;
 		
-		public DescriptionRetrieval(TextView des){
-			description = des;
+		public DescriptionRetrieval(WebView description2){
+			description = description2;
 		}
 		
 		@Override
@@ -134,7 +135,9 @@ public class DescriptionFragment extends Fragment{
 	    protected void onPostExecute(String result) {
 	        super.onPostExecute(result);
 	        result = result.substring(2, result.length()-1);
-			description.setText(result);
+	        String text = "<html><body>" + "<p align=\"justify\">" + result + "</p> " + "</body></html>";
+	        result = text;
+			description.loadData(result, "text/html", "utf-8");
 			pd = new ProjectDescription(result);
 			try {
 				save_data();

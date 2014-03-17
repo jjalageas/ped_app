@@ -91,6 +91,7 @@ public class BacklogFragment extends Fragment {
 					
 					ctr++;
 				}
+				listDataHeader.add("Create New User Story");
 				listDataHeader.add("Back to Projects");
 				
 				listAdapter = new ExpandableListAdapter(BacklogFragment.this, listDataHeader, listDataChild);
@@ -206,9 +207,10 @@ public class BacklogFragment extends Fragment {
 				listDataHeader.add("User Story #" + data.getJSONObject(i).getString("id"));
 				backlog.getBacklog().add(new BacklogContent("User Story #" + (String) data.getJSONObject(i).getString("id")));
 			}
+			listDataHeader.add("Create New User Story");
 			listDataHeader.add("Back to Projects");
 			
-			for(int i=0; i< listDataHeader.size()-1; i++){
+			for(int i=0; i< listDataHeader.size()-2; i++){
 				
 				List<String> project = new ArrayList<String>();
 				

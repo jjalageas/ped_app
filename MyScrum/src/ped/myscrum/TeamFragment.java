@@ -30,6 +30,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,6 +88,7 @@ public class TeamFragment extends Fragment {
 					
 					ctr++;
 				}
+				listDataHeader.add("Add User");
 				listDataHeader.add("Back to Projects");
 				
 				listAdapter = new ExpandableListAdapter(TeamFragment.this, listDataHeader, listDataChild);
@@ -104,9 +106,21 @@ public class TeamFragment extends Fragment {
 			@Override
 			public boolean onGroupClick(ExpandableListView parent, View v,
 					int groupPosition, long id) {
+				Fragment fragment;
 				if(groupPosition == listDataHeader.size()-1){
 					getFragmentManager().popBackStackImmediate();
 				}
+				else
+					if(groupPosition == listDataHeader.size()-2){
+						fragment = new AddTeamMemberFragment();
+						Bundle team_args = new Bundle();
+						team_args.putCharSequence("api_key", api_key);
+						team_args.putInt("project_id", groupPosition + 1);
+					    fragment.setArguments(team_args);
+						FragmentManager fragmentManager = getFragmentManager();
+						fragmentManager.beginTransaction()
+						.replace(R.id.frame_container, fragment).commit();
+					}
 				return false;
 			}
 		});
@@ -203,9 +217,10 @@ public class TeamFragment extends Fragment {
 				listDataHeader.add(data.getJSONObject(i).getString("username"));
 				team.getTeam().add(new TeamMember((String) data.getJSONObject(i).getString("username")));
 			}
+			listDataHeader.add("Add User");
 			listDataHeader.add("Back to Projects");
 			
-			for(int i=0; i< listDataHeader.size()-1; i++){
+			for(int i=0; i< listDataHeader.size()-2; i++){
 				
 				List<String> project = new ArrayList<String>();
 				project.add(data.getJSONObject(i).getString("email"));

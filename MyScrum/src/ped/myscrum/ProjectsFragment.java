@@ -3,8 +3,15 @@ package ped.myscrum;
 import info.androidhive.slidingmenu.R;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.StreamCorruptedException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -15,8 +22,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import ped.myscrum.adapter.ExpandableListAdapter;
+import ped.myscrum.serialization.Project;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -34,6 +45,7 @@ public class ProjectsFragment extends Fragment {
 	List<String> listDataHeader;
 	HashMap<String, List<String>> listDataChild;
 	private CharSequence api_key;
+	private Project projects;
 
 	@Override
 	 public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,7 +59,47 @@ public class ProjectsFragment extends Fragment {
 		listDataHeader = new ArrayList<String>();
 		listDataChild = new HashMap<String, List<String>>();
 		
-		new ProjectsInformationRetrieval(listDataHeader, listDataChild, expListView).execute("http://10.0.2.2:3000/api/owner/projects?api_key=" + api_key);
+
+		ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+		
+		if(activeNetworkInfo != null && activeNetworkInfo.isConnected()){
+			new ProjectsInformationRetrieval(listDataHeader, listDataChild, expListView).execute("http://10.0.2.2:3000/api/owner/projects?api_key=" + api_key);
+		}
+		else{
+			try
+			{
+				projects = load_data(new File(this.getActivity().getFilesDir() + "projects.bin"));
+				int ctr = 0;
+				
+				listDataHeader = new ArrayList<String>();
+				listDataChild = new HashMap<String, List<String>>();
+				
+				for(int i=0; i<projects.getProjects().size(); i++){
+					
+					List<String> project = new ArrayList<String>();
+					
+					listDataHeader.add(projects.getProjects().get(i));
+					project.add("Description");
+					project.add("Team");
+					project.add("Backlog");
+					project.add("Sprints");
+					project.add("Tests");
+					listDataChild.put(listDataHeader.get(ctr), project);
+					
+					ctr++;
+				}
+
+				
+				listAdapter = new ExpandableListAdapter(ProjectsFragment.this, listDataHeader, listDataChild);
+				this.expListView.setAdapter(listAdapter);
+					
+
+			}catch(Exception ex)
+			{
+				ex.printStackTrace();
+			}
+		}
 		
 		
 		expListView.setOnGroupClickListener(new OnGroupClickListener() {
@@ -131,6 +183,22 @@ public class ProjectsFragment extends Fragment {
 	}
 
 	
+	public void save_data() throws FileNotFoundException, IOException{
+		File save = new File(this.getActivity().getFilesDir() + "projects.bin");
+		save.createNewFile();
+		ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(save));
+		oos.writeObject(projects);
+		oos.flush();
+		oos.close();
+	}
+
+	@SuppressWarnings("resource")
+	public Project load_data(File f) throws StreamCorruptedException, FileNotFoundException, IOException, ClassNotFoundException{
+		ObjectInputStream ois = new ObjectInputStream(new FileInputStream(f));
+		projects = (Project) ois.readObject();
+		return projects;
+	}
+	
 	private class ProjectsInformationRetrieval extends AsyncTask<String, String, String>{
 		
 		private List<String> listDataHeader;
@@ -175,18 +243,19 @@ public class ProjectsFragment extends Fragment {
 	    protected void onPostExecute(String result) {
 	        
 			super.onPostExecute(result);
+			projects = new Project();
 	      
 			try{
 			JSONArray data;
 			data = new JSONArray(result);
 			
-			for(int i=0; i<data.length(); i++)
+			for(int i=0; i<data.length(); i++){
 				listDataHeader.add(data.getJSONObject(i).getString("title"));
-			} catch (JSONException e) {
-				e.printStackTrace();
+				projects.getProjects().add(data.getJSONObject(i).getString("title"));
 			}
-			
-			for(int i=0; i< listDataHeader.size(); i++){
+			listDataHeader.add("Create New Project");
+
+			for(int i=0; i< listDataHeader.size()-1; i++){
 				List<String> project = new ArrayList<String>();
 				project.add("Description");
 				project.add("Team");
@@ -194,10 +263,21 @@ public class ProjectsFragment extends Fragment {
 				project.add("Sprints");
 				project.add("Tests");
 				listDataChild.put(listDataHeader.get(i), project);
+				
+				
 			}
-			
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+
 			listAdapter = new ExpandableListAdapter(ProjectsFragment.this, listDataHeader, listDataChild);
 			this.expListView.setAdapter(listAdapter);
+			
+			try {
+				save_data();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			
 	    }
 		

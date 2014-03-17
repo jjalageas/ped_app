@@ -69,7 +69,6 @@ public class TestsFragment extends Fragment {
 		}
 		
 		else{
-			System.out.println("/////////////////////////////////////////////////////");
 			try
 			{
 				tests = load_data(new File(this.getActivity().getFilesDir() + "tests_" + project_id + ".bin"));

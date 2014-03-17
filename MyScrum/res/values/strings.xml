@@ -62,6 +62,7 @@
 	
 	<string name="first_name">First name</string>
 	<string name="last_name">Last name</string>
+	<string name="email">Email</string>
 	<string name="password_confirmation">Confirm Password</string>
 	<string name="sprints">Sprints</string>
 	<string name="team">Team</string>
