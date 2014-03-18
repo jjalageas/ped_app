@@ -22,29 +22,25 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 public class MainActivity extends Activity {
+	
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
-
 	private CharSequence mDrawerTitle;
-
 	private CharSequence mTitle;
-
 	private String[] navMenuTitles;
 	private TypedArray navMenuIcons;
-
 	private ArrayList<NavDrawerItem> navDrawerItems;
 	private NavDrawerListAdapter adapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
 		mTitle = mDrawerTitle = getTitle();
-
 		navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
-
 		navMenuIcons = getResources()
 				.obtainTypedArray(R.array.nav_drawer_icons);
 
@@ -52,15 +48,12 @@ public class MainActivity extends Activity {
 		mDrawerList = (ListView) findViewById(R.id.list_slidermenu);
 
 		navDrawerItems = new ArrayList<NavDrawerItem>();
-
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1)));
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1)));
-		//navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
+
 
 		navMenuIcons.recycle();
-
 		mDrawerList.setOnItemClickListener(new SlideMenuClickListener());
-
 		adapter = new NavDrawerListAdapter(getApplicationContext(),
 				navDrawerItems);
 		mDrawerList.setAdapter(adapter);

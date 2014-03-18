@@ -41,14 +41,14 @@ import android.widget.ExpandableListView.OnGroupClickListener;
 
 public class SprintsFragment extends Fragment {
 
-	ExpandableListAdapter listAdapter;
-	ExpandableListView expListView;
-	List<String> listDataHeader;
-	HashMap<String, List<String>> listDataChild;
+	private ExpandableListAdapter listAdapter;
+	private ExpandableListView expListView;
+	private List<String> listDataHeader;
+	private HashMap<String, List<String>> listDataChild;
 	private CharSequence api_key;
 	private int project_id;
 	private List<Integer> sprint_ids;
-	Sprints sprints;
+	private Sprints sprints;
 
 	@Override
 	 public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -128,7 +128,7 @@ public class SprintsFragment extends Fragment {
 						fragment.setArguments(sprints_args);
 						FragmentManager fragmentManager = getFragmentManager();
 						fragmentManager.beginTransaction()
-						.replace(R.id.frame_container, fragment).commit();
+						.replace(R.id.frame_container, fragment).addToBackStack(String.valueOf(groupPosition)).commit();
 					}
 				return false;
 			}
@@ -203,8 +203,8 @@ public class SprintsFragment extends Fragment {
 		
 		private List<String> listDataHeader;
 		private HashMap<String, List<String>> listDataChild;
-		ExpandableListAdapter listAdapter;
-		ExpandableListView expListView;
+		private ExpandableListAdapter listAdapter;
+		private ExpandableListView expListView;
 
 
 		

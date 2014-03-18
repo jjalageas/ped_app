@@ -156,7 +156,7 @@ public class MainActivityLoggedIn extends Activity{
 		if (fragment != null) {
 			FragmentManager fragmentManager = getFragmentManager();
 			fragmentManager.beginTransaction()
-					.replace(R.id.frame_container, fragment).commit();
+					.replace(R.id.frame_container, fragment).addToBackStack(String.valueOf("position")).commit();
 
 			mDrawerList.setItemChecked(position, true);
 			mDrawerList.setSelection(position);

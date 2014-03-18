@@ -39,14 +39,14 @@ import android.widget.ExpandableListView.OnGroupClickListener;
 
 public class SprintsUserStoriesFragment extends Fragment {
 
-	ExpandableListAdapter listAdapter;
-	ExpandableListView expListView;
-	List<String> listDataHeader;
-	HashMap<String, List<String>> listDataChild;
+	private ExpandableListAdapter listAdapter;
+	private ExpandableListView expListView;
+	private List<String> listDataHeader;
+	private HashMap<String, List<String>> listDataChild;
 	private CharSequence api_key;
 	private int project_id;
 	private int sprint_id;
-	Backlog backlog;
+	private Backlog backlog;
 
 	@Override
 	 public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -162,8 +162,8 @@ public class SprintsUserStoriesFragment extends Fragment {
 		
 		private List<String> listDataHeader;
 		private HashMap<String, List<String>> listDataChild;
-		ExpandableListAdapter listAdapter;
-		ExpandableListView expListView;
+		private ExpandableListAdapter listAdapter;
+		private ExpandableListView expListView;
 
 
 		

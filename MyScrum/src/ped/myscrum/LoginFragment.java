@@ -22,6 +22,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.app.FragmentManager;
 
 public class LoginFragment extends Fragment{
 
@@ -38,7 +39,18 @@ public class LoginFragment extends Fragment{
         
         apiKey = (EditText) rootView.findViewById(R.id.key);
         loginButton = (Button) rootView.findViewById(R.id.login_button);
+        Button signup = (Button) rootView.findViewById(R.id.signup_button);
         
+        signup .setOnClickListener(new OnClickListener() {			
+        	@Override
+        	public void onClick(View v) {
+        		Fragment fragment = new SignupFragment();
+        		FragmentManager fragmentManager = getFragmentManager();
+        		fragmentManager.beginTransaction()
+        		.replace(R.id.frame_container, fragment).addToBackStack("pop").commit();
+        	}
+        });	
+      
         loginButton.setOnClickListener(new OnClickListener() {			
 			@Override
 			public void onClick(View v) {

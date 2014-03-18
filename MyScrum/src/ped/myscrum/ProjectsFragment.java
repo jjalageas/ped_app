@@ -40,10 +40,10 @@ import android.widget.ExpandableListView.OnGroupClickListener;
 
 public class ProjectsFragment extends Fragment {
 
-	ExpandableListAdapter listAdapter;
-	ExpandableListView expListView;
-	List<String> listDataHeader;
-	HashMap<String, List<String>> listDataChild;
+	private ExpandableListAdapter listAdapter;
+	private ExpandableListView expListView;
+	private List<String> listDataHeader;
+	private HashMap<String, List<String>> listDataChild;
 	private CharSequence api_key;
 	private Project projects;
 
@@ -110,6 +110,9 @@ public class ProjectsFragment extends Fragment {
 				if(listDataHeader.get(groupPosition).equals("Create New Project")){
 					Fragment fragment = null;
 					fragment = new CreateProjectFragment();
+					Bundle pro_args = new Bundle();
+					pro_args.putCharSequence("api_key", api_key);
+				    fragment.setArguments(pro_args);
 					FragmentManager fragmentManager = getFragmentManager();
 					fragmentManager.beginTransaction()
 							.replace(R.id.frame_container, fragment).commit();
@@ -203,8 +206,8 @@ public class ProjectsFragment extends Fragment {
 		
 		private List<String> listDataHeader;
 		private HashMap<String, List<String>> listDataChild;
-		ExpandableListAdapter listAdapter;
-		ExpandableListView expListView;
+		private ExpandableListAdapter listAdapter;
+		private ExpandableListView expListView;
 
 
 		

@@ -7,32 +7,43 @@
     android:orientation="vertical" >
 
     <EditText
-        android:id="@+id/edit_project_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/project_name"
-        android:layout_alignParentRight="true"
-        android:ems="10" />
-
-    <EditText
         android:id="@+id/edit_project_repo"
+        android:inputType="text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/project_repo"
-        android:layout_alignParentRight="true"
-        android:layout_toRightOf="@+id/project_repo"
-        android:ems="10" >
+        android:layout_alignLeft="@+id/edit_project_name"
+        android:layout_alignRight="@+id/edit_project_name"
+        android:ems="10" />
 
-        <requestFocus />
-    </EditText>
+
+    <Button
+        android:id="@+id/create_project"
+        style="@style/AppBaseTheme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="14dp"
+        android:text="@string/create_project" />
+
+    <EditText
+        android:id="@+id/edit_project_name"
+        android:inputType="text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/create_project"
+        android:layout_marginTop="60dp"
+        android:ems="10" />
 
     <TextView
         android:id="@+id/project_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/edit_project_repo"
-        android:layout_marginBottom="14dp"
-        android:layout_toLeftOf="@+id/edit_project_name"
+        android:layout_alignBottom="@+id/edit_project_name"
+        android:layout_alignParentLeft="true"
         android:text="@string/project_name"
         android:textColor="#000000" />
 
@@ -40,20 +51,28 @@
         android:id="@+id/project_repo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/create_project"
-        android:layout_alignLeft="@+id/project_name"
-        android:layout_marginBottom="27dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/project_name"
+        android:layout_marginTop="16dp"
         android:text="@string/repository"
         android:textColor="#000000" />
 
-    <Button
-        android:id="@+id/create_project"
-        style="@style/AppBaseTheme"
+    <TextView
+        android:id="@+id/description_bis"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="16dp"
-        android:text="@string/create_project" />
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/project_repo"
+        android:layout_marginTop="17dp"
+        android:text="Description:" />
+
+    <EditText
+        android:id="@+id/description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/edit_project_repo"
+        android:layout_below="@+id/edit_project_repo"
+        android:ems="10"
+        android:inputType="textMultiLine" />
 
 </RelativeLayout>

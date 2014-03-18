@@ -25,6 +25,7 @@ import ped.myscrum.adapter.ExpandableListAdapter;
 import ped.myscrum.serialization.Backlog;
 import ped.myscrum.serialization.BacklogContent;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -39,13 +40,13 @@ import android.widget.ExpandableListView.OnGroupClickListener;
 
 public class BacklogFragment extends Fragment {
 
-	ExpandableListAdapter listAdapter;
-	ExpandableListView expListView;
-	List<String> listDataHeader;
-	HashMap<String, List<String>> listDataChild;
+	private ExpandableListAdapter listAdapter;
+	private ExpandableListView expListView;
+	private List<String> listDataHeader;
+	private HashMap<String, List<String>> listDataChild;
 	private CharSequence api_key;
 	private int project_id;
-	Backlog backlog;
+	private Backlog backlog;
 
 	@Override
 	 public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -112,6 +113,17 @@ public class BacklogFragment extends Fragment {
 				if(groupPosition == listDataHeader.size()-1){
 					getFragmentManager().popBackStackImmediate();
 				}
+				else
+					if(groupPosition == listDataHeader.size()-2){
+						Fragment fragment = new CreateUserStoryFragment();
+						Bundle args = new Bundle();
+						args.putCharSequence("api_key", api_key);
+						args.putInt("project_id", project_id);
+					    fragment.setArguments(args);
+						FragmentManager fragmentManager = getFragmentManager();
+						fragmentManager.beginTransaction()
+						.replace(R.id.frame_container, fragment).addToBackStack(String.valueOf(groupPosition)).commit();
+					}
 				return false;
 			}
 		});
@@ -157,8 +169,8 @@ public class BacklogFragment extends Fragment {
 		
 		private List<String> listDataHeader;
 		private HashMap<String, List<String>> listDataChild;
-		ExpandableListAdapter listAdapter;
-		ExpandableListView expListView;
+		private ExpandableListAdapter listAdapter;
+		private ExpandableListView expListView;
 
 
 		

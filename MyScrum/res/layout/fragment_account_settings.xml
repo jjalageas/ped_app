@@ -57,4 +57,13 @@
         android:layout_marginRight="20dp"
         android:text="Edit" />
 
+    <Button
+        android:id="@+id/back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/edit"
+        android:layout_alignBottom="@+id/edit"
+        android:layout_toLeftOf="@+id/edit"
+        android:text="Back" />
+
 </RelativeLayout>

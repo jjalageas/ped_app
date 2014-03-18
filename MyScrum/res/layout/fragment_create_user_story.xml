@@ -3,7 +3,7 @@
     android:id="@+id/RelativeLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/index_plain"
+    android:background="#FFFFFF"
     android:orientation="vertical" >
 
     <TextView
@@ -14,7 +14,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="26dp"
-        android:textColor="#FFFFFF"
+        android:textColor="#000000"
         android:text="@string/title" />
 
     <EditText
@@ -22,20 +22,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/description"
-        android:layout_alignParentRight="true"
+        android:layout_alignLeft="@+id/edit_difficulty"
+        android:layout_alignRight="@+id/edit_difficulty"
         android:ems="10"
-        android:textColor="#FFFFFF"
-        android:inputType="textMultiLine" />
+        android:inputType="textMultiLine"
+        android:textColor="#000000" />
     
     <EditText
         android:id="@+id/edit_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/description"
-        android:layout_toRightOf="@+id/priority"
+        android:layout_alignLeft="@+id/edit_title"
+        android:layout_alignRight="@+id/edit_title"
         android:ems="10"
-        android:inputType="textNoSuggestions"
-        android:textColor="#FFFFFF" />
+        android:inputType="textMultiLine"
+        android:textColor="#000000" />
 
     <EditText
         android:id="@+id/edit_difficulty"
@@ -61,37 +63,43 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/title"
         android:layout_below="@+id/title"
-        android:layout_marginTop="103dp"
+        android:layout_marginTop="29dp"
         android:text="@string/description"
-        android:textColor="#FFFFFF" />
-
-    <TextView
-        android:id="@+id/difficulty"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/description"
-        android:layout_below="@+id/description"
-        android:layout_marginTop="28dp"
-        android:text="@string/difficulty"
-        android:textColor="#FFFFFF" />
+        android:textColor="#000000" />
 
     <TextView
         android:id="@+id/priority"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/difficulty"
-        android:layout_below="@+id/difficulty"
-        android:layout_marginTop="30dp"
+        android:layout_centerVertical="true"
         android:text="@string/priority"
-        android:textColor="#FFFFFF" />
+        android:textColor="#000000" />
+
+    <TextView
+        android:id="@+id/difficulty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/edit_priority"
+        android:layout_alignLeft="@+id/description"
+        android:text="@string/difficulty"
+        android:textColor="#000000" />
 
     <Button
         android:id="@+id/submit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_alignRight="@+id/edit_priority"
-        android:layout_below="@+id/edit_priority"
-        android:layout_marginTop="22dp"
+        android:layout_marginBottom="22dp"
         android:text="@string/submit" />
+
+    <Button
+        android:id="@+id/back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/submit"
+        android:layout_toLeftOf="@+id/submit"
+        android:text="Back To Backlog" />
 
 </RelativeLayout>

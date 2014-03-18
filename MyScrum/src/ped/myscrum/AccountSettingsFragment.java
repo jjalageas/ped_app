@@ -37,7 +37,7 @@ import com.json.parsers.JsonParserFactory;
 public class AccountSettingsFragment extends Fragment{
 
 	private CharSequence api_key;
-	AccountSettings settings_data;
+	private AccountSettings settings_data;
 	
 	public AccountSettingsFragment(){}
 
@@ -49,27 +49,26 @@ public class AccountSettingsFragment extends Fragment{
 		api_key = getArguments().getString("api_key");
 		View rootView = inflater.inflate(R.layout.fragment_account_settings, container, false);
 
-		TextView username = (TextView) rootView.findViewById(R.id.username);
-		TextView firstname = (TextView) rootView.findViewById(R.id.first_name);
-		TextView lastname = (TextView) rootView.findViewById(R.id.last_name);
-		TextView email = (TextView) rootView.findViewById(R.id.email);
-		Button edit = (Button) rootView.findViewById(R.id.edit);
-		
-		edit.setOnClickListener(new OnClickListener() {	
-			@Override
-			public void onClick(View v) {
-				Fragment fragment = new EditSettingsFragment();
-				FragmentManager fragmentManager = getFragmentManager();
-				fragmentManager.beginTransaction()
-				.replace(R.id.frame_container, fragment).commit();
-			}
-		});
+		final TextView username = (TextView) rootView.findViewById(R.id.username);
+		final TextView firstname = (TextView) rootView.findViewById(R.id.first_name);
+		final TextView lastname = (TextView) rootView.findViewById(R.id.last_name);
+		final TextView email = (TextView) rootView.findViewById(R.id.email);
+		final Button edit = (Button) rootView.findViewById(R.id.edit);
+		final Button back = (Button) rootView.findViewById(R.id.back);
 
 		ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+		
+		back.setOnClickListener(new OnClickListener() {	
+			@Override
+			public void onClick(View v) {
+				getFragmentManager().popBackStackImmediate();
+			}
+			
+		});
 
 		if(activeNetworkInfo != null && activeNetworkInfo.isConnected()){
-			OwnerInformationRetrieval oir = new OwnerInformationRetrieval(username, firstname, lastname, email);
+			OwnerInformationRetrieval oir = new OwnerInformationRetrieval(username, firstname, lastname, email, edit);
 			oir.execute("http://10.0.2.2:3000/api/owner/profile?api_key=" + api_key);    
 		}
 
@@ -91,6 +90,8 @@ public class AccountSettingsFragment extends Fragment{
 			}
 
 		}
+		
+
 
 		return rootView;
 	}
@@ -120,13 +121,15 @@ public class AccountSettingsFragment extends Fragment{
 		private TextView lastName;
 		private TextView username;
 		private TextView email;
+		private Button edit;
 
 		
-		public OwnerInformationRetrieval(TextView firstName, TextView lastName, TextView username, TextView email){
+		public OwnerInformationRetrieval(TextView firstName, TextView lastName, TextView username, TextView email, Button ed){
 			this.firstName = firstName;
 			this.lastName = lastName;
 			this.username = username;
 			this.email = email;
+			this.edit = ed;
 		}
 		
 		@Override
@@ -158,12 +161,31 @@ public class AccountSettingsFragment extends Fragment{
 	        super.onPostExecute(result);
 	        JsonParserFactory factory=JsonParserFactory.getInstance();
 	        JSONParser parser=factory.newJsonParser();
-			Map parsedData = parser.parseJson(result);
+			final Map parsedData = parser.parseJson(result);
 			firstName.setText("First Name:     " + (CharSequence) parsedData.get("first_name"));
 			lastName.setText("Last Name:     " + (CharSequence) parsedData.get("last_name"));
 			username.setText("Username:      " +(CharSequence) parsedData.get("username"));
 			email.setText("Email:               " + (CharSequence) parsedData.get("email"));
 			settings_data = new AccountSettings((String) parsedData.get("username"), (String) parsedData.get("first_name"), (String) parsedData.get("last_name"), (String) parsedData.get("email"));
+			
+			edit.setOnClickListener(new OnClickListener() {	
+				@Override
+				public void onClick(View v) {
+					Fragment fragment = new EditSettingsFragment();
+					Bundle args = new Bundle();
+					
+					args.putCharSequence("username", (CharSequence) parsedData.get("username"));
+					args.putCharSequence("firstname", (CharSequence) parsedData.get("first_name"));
+					args.putCharSequence("lastname",(CharSequence) parsedData.get("last_name") );
+					args.putCharSequence("email",(CharSequence) parsedData.get("email") );
+				    
+					fragment.setArguments(args);
+					FragmentManager fragmentManager = getFragmentManager();
+					fragmentManager.beginTransaction()
+					.replace(R.id.frame_container, fragment).addToBackStack("back").commit();
+				}
+			});
+			
 			try {
 				save_data();
 			} catch (Exception e) {

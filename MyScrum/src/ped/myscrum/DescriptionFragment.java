@@ -35,7 +35,7 @@ public class DescriptionFragment extends Fragment{
 	private CharSequence api_key;
 	private int project_id;
 	private Button back;
-	ProjectDescription pd;
+	private ProjectDescription pd;
 	
 	public DescriptionFragment(){}
 	

@@ -40,13 +40,15 @@ import android.widget.ExpandableListView.OnGroupClickListener;
 
 public class TeamFragment extends Fragment {
 
-	ExpandableListAdapter listAdapter;
-	ExpandableListView expListView;
-	List<String> listDataHeader;
-	HashMap<String, List<String>> listDataChild;
+	private ExpandableListAdapter listAdapter;
+	private ExpandableListView expListView;
+	private List<String> listDataHeader;
+	private HashMap<String, List<String>> listDataChild;
 	private CharSequence api_key;
 	private int project_id;
-	Team team;
+	private Team team;
+	private List<String> user_ids;
+	private List<String> usernames;
 
 	@Override
 	 public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -75,6 +77,7 @@ public class TeamFragment extends Fragment {
 				
 				listDataHeader = new ArrayList<String>();
 				listDataChild = new HashMap<String, List<String>>();
+				user_ids = new ArrayList<String>();
 				
 				for(TeamMember t: team.getTeam()){
 					
@@ -85,6 +88,7 @@ public class TeamFragment extends Fragment {
 					project.add(t.getLastname());
 					project.add(t.getFirstname());
 					listDataChild.put(listDataHeader.get(ctr), project);
+					user_ids.add(t.getUsername());
 					
 					ctr++;
 				}
@@ -114,12 +118,24 @@ public class TeamFragment extends Fragment {
 					if(groupPosition == listDataHeader.size()-2){
 						fragment = new AddTeamMemberFragment();
 						Bundle team_args = new Bundle();
+						
 						team_args.putCharSequence("api_key", api_key);
-						team_args.putInt("project_id", groupPosition + 1);
-					    fragment.setArguments(team_args);
+						team_args.putInt("project_id", project_id);
+					    
+						int ctr = 1;
+						for(int i=0; i<user_ids.size(); i++){
+							team_args.putCharSequence("user" + String.valueOf(i+1), usernames.get(i));
+							team_args.putCharSequence("ids" + String.valueOf(i+1), user_ids.get(i));
+							++ctr;
+						}
+						team_args.putInt("nb_users", ctr);
+						System.out.println(ctr);
+						System.out.println(user_ids.size());
+						
+						fragment.setArguments(team_args);
 						FragmentManager fragmentManager = getFragmentManager();
 						fragmentManager.beginTransaction()
-						.replace(R.id.frame_container, fragment).commit();
+						.replace(R.id.frame_container, fragment).addToBackStack(String.valueOf(groupPosition)).commit();
 					}
 				return false;
 			}
@@ -167,8 +183,8 @@ public class TeamFragment extends Fragment {
 		
 		private List<String> listDataHeader;
 		private HashMap<String, List<String>> listDataChild;
-		ExpandableListAdapter listAdapter;
-		ExpandableListView expListView;
+		private ExpandableListAdapter listAdapter;
+		private ExpandableListView expListView;
 
 
 		
@@ -208,6 +224,8 @@ public class TeamFragment extends Fragment {
 	        
 			super.onPostExecute(result);
 			team = new Team();
+			user_ids = new ArrayList<String>();
+			usernames = new ArrayList<String>();
 			
 			try{
 			JSONArray data;
@@ -215,6 +233,8 @@ public class TeamFragment extends Fragment {
 			
 			for(int i=0; i<data.length(); i++){
 				listDataHeader.add(data.getJSONObject(i).getString("username"));
+				usernames.add(data.getJSONObject(i).getString("username"));
+				user_ids.add(data.getJSONObject(i).getString("id"));
 				team.getTeam().add(new TeamMember((String) data.getJSONObject(i).getString("username")));
 			}
 			listDataHeader.add("Add User");
