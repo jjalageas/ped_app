@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 public class BacklogContent implements Serializable{
 	
+	private static final long serialVersionUID = 6532381678622264922L;
+	
 	private String id;
 	private String title;
 	private String description;
