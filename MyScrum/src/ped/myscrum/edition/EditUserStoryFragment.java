@@ -1,7 +1,5 @@
 package ped.myscrum.edition;
 
-import info.androidhive.slidingmenu.R;
-
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -10,6 +8,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Map;
 
+import ped.myscrum.gen.R;
 import android.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;

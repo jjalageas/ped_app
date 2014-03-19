@@ -1,7 +1,5 @@
 package ped.myscrum.display;
 
-import info.androidhive.slidingmenu.R;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -25,6 +23,7 @@ import ped.myscrum.adapter.ExpandableListAdapter;
 import ped.myscrum.serialization.SprintContent;
 import ped.myscrum.serialization.Sprints;
 import ped.myscrum.creation.CreateSprintFragment;
+import ped.myscrum.gen.R;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;

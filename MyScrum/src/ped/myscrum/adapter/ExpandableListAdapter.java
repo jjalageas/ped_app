@@ -1,10 +1,9 @@
 package ped.myscrum.adapter;
 
-import info.androidhive.slidingmenu.R;
-
 import java.util.HashMap;
 import java.util.List;
 
+import ped.myscrum.gen.R;
 import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Typeface;

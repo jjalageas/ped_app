@@ -1,6 +1,5 @@
 package ped.myscrum.edition;
 
-import info.androidhive.slidingmenu.R;
 import android.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -16,6 +15,8 @@ import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import ped.myscrum.gen.R;
 
 public class EditSettingsFragment extends Fragment{
 

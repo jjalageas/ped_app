@@ -1,11 +1,9 @@
 package ped.myscrum.adapter;
 
-import info.androidhive.slidingmenu.R;
-
 import java.util.ArrayList;
 
+import ped.myscrum.gen.R;
 import ped.myscrum.model.NavDrawerItem;
-
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;

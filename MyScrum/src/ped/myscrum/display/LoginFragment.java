@@ -1,8 +1,6 @@
 
 package ped.myscrum.display;
 
-import info.androidhive.slidingmenu.R;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -10,6 +8,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import ped.myscrum.creation.CreateAccountFragment;
+import ped.myscrum.gen.R;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.AsyncTask;

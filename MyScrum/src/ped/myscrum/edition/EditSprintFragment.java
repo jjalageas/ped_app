@@ -1,7 +1,5 @@
 package ped.myscrum.edition;
 
-import info.androidhive.slidingmenu.R;
-
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -13,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
+import ped.myscrum.gen.R;
 import android.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;

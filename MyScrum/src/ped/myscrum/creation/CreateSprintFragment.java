@@ -1,7 +1,5 @@
 package ped.myscrum.creation;
 
-import info.androidhive.slidingmenu.R;
-
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -17,6 +15,7 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import ped.myscrum.gen.R;
 import android.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;

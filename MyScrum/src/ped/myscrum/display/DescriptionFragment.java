@@ -1,7 +1,5 @@
 package ped.myscrum.display;
 
-import info.androidhive.slidingmenu.R;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -15,6 +13,7 @@ import java.io.StreamCorruptedException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import ped.myscrum.gen.R;
 import ped.myscrum.serialization.ProjectDescription;
 import android.app.Fragment;
 import android.content.Context;

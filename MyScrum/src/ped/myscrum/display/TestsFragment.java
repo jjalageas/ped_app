@@ -1,7 +1,5 @@
 package ped.myscrum.display;
 
-import info.androidhive.slidingmenu.R;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -23,6 +21,7 @@ import org.json.JSONException;
 
 import ped.myscrum.adapter.ExpandableListAdapter;
 import ped.myscrum.creation.CreateTestFragment;
+import ped.myscrum.gen.R;
 import ped.myscrum.serialization.TestContent;
 import ped.myscrum.serialization.Tests;
 import android.app.Fragment;

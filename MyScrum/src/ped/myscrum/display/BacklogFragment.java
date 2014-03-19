@@ -1,7 +1,5 @@
 package ped.myscrum.display;
 
-import info.androidhive.slidingmenu.R;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -24,6 +22,7 @@ import org.json.JSONException;
 import ped.myscrum.adapter.ExpandableListAdapter;
 import ped.myscrum.creation.CreateUserStoryFragment;
 import ped.myscrum.edition.EditUserStoryFragment;
+import ped.myscrum.gen.R;
 import ped.myscrum.serialization.Backlog;
 import ped.myscrum.serialization.BacklogContent;
 import android.app.Fragment;

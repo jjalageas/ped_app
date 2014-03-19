@@ -1,12 +1,11 @@
 package ped.myscrum.display;
 
-import info.androidhive.slidingmenu.R;
-
 import java.util.ArrayList;
 
 import ped.myscrum.adapter.NavDrawerListAdapter;
 import ped.myscrum.model.NavDrawerItem;
 import ped.myscrum.creation.CreateAccountFragment;
+import ped.myscrum.gen.R;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;

@@ -1,6 +1,6 @@
 package ped.myscrum.display;
 
-import info.androidhive.slidingmenu.R;
+import ped.myscrum.gen.R;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;

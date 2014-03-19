@@ -1,7 +1,5 @@
 package ped.myscrum.display;
 
-import info.androidhive.slidingmenu.R;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,6 +15,7 @@ import java.net.URL;
 import java.util.Map;
 
 import ped.myscrum.edition.EditSettingsFragment;
+import ped.myscrum.gen.R;
 import ped.myscrum.serialization.AccountSettings;
 import android.app.Fragment;
 import android.app.FragmentManager;
