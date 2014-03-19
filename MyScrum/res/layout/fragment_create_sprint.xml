@@ -5,8 +5,6 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF"
     android:orientation="vertical" >
-
- 
     
     <TextView
         android:id="@+id/textView1"
@@ -16,16 +14,16 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="14dp"
         android:layout_marginTop="16dp"
-        android:text="Select Start Date" />
+        android:text="@string/select_start_date" />
 
      <TextView
          android:id="@+id/textView2"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
-         android:layout_alignLeft="@+id/dpResult"
-         android:layout_below="@+id/dpResult"
+         android:layout_alignLeft="@+id/start_date"
+         android:layout_below="@+id/start_date"
          android:layout_marginTop="24dp"
-         android:text="Duration" />
+         android:text="@string/duration" />
 
      <Spinner
          android:id="@+id/duration"
@@ -41,7 +39,7 @@
          android:layout_alignLeft="@+id/duration"
          android:layout_below="@+id/duration"
          android:layout_marginTop="28dp"
-         android:text="User Stories" />
+         android:text="@string/user_stories" />
 
      <Spinner
          android:id="@+id/user_stories"
@@ -49,24 +47,31 @@
          android:layout_height="wrap_content"
          android:layout_alignLeft="@+id/textView3"
          android:layout_below="@+id/textView3" />
-
-
-         <Button
-             android:id="@+id/button1"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:layout_alignParentRight="true"
-             android:layout_below="@+id/user_stories"
-             android:layout_marginRight="21dp"
-             android:text="Submit" />
+     
+     <Button
+        android:id="@+id/submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/user_stories"
+        android:layout_marginRight="21dp"
+        android:text="@string/submit" />
 
      <DatePicker
-         android:id="@+id/dpResult"
+         android:id="@+id/start_date"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
          android:layout_alignLeft="@+id/textView1"
          android:layout_below="@+id/textView1"
          android:calendarViewShown="false"
          android:spinnersShown="true" />
+
+     <Button
+         android:id="@+id/back"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_below="@+id/user_stories"
+         android:layout_toLeftOf="@+id/submit" 
+         android:text="@string/back" />
 
 </RelativeLayout>

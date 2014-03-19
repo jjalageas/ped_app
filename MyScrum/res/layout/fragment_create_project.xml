@@ -75,4 +75,13 @@
         android:ems="10"
         android:inputType="textMultiLine" />
 
+    <CheckBox
+        android:id="@+id/public_"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/description"
+        android:layout_marginTop="22dp"
+        android:text="@string/public_" />
+
 </RelativeLayout>

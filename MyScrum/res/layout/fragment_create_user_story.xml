@@ -27,17 +27,6 @@
         android:ems="10"
         android:inputType="textMultiLine"
         android:textColor="#000000" />
-    
-    <EditText
-        android:id="@+id/edit_description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/description"
-        android:layout_alignLeft="@+id/edit_title"
-        android:layout_alignRight="@+id/edit_title"
-        android:ems="10"
-        android:inputType="textMultiLine"
-        android:textColor="#000000" />
 
     <EditText
         android:id="@+id/edit_difficulty"
@@ -56,16 +45,6 @@
         android:layout_alignLeft="@+id/edit_difficulty"
         android:ems="10"
         android:inputType="number" />
-
-    <TextView
-        android:id="@+id/description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/title"
-        android:layout_below="@+id/title"
-        android:layout_marginTop="29dp"
-        android:text="@string/description"
-        android:textColor="#000000" />
 
     <TextView
         android:id="@+id/priority"
@@ -100,6 +79,25 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/submit"
         android:layout_toLeftOf="@+id/submit"
-        android:text="Back To Backlog" />
+        android:text="@string/back_to_backlog" />
+
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/edit_difficulty"
+        android:layout_alignLeft="@+id/title"
+        android:text="@string/description"
+        android:textColor="#000000" />
+
+    <EditText
+        android:id="@+id/edit_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/title"
+        android:layout_alignLeft="@+id/edit_title"
+        android:ems="10"
+        android:inputType="textMultiLine"
+        android:textColor="#000000" />
 
 </RelativeLayout>
