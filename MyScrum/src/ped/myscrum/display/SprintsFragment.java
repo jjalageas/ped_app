@@ -23,6 +23,7 @@ import ped.myscrum.adapter.ExpandableListAdapter;
 import ped.myscrum.serialization.SprintContent;
 import ped.myscrum.serialization.Sprints;
 import ped.myscrum.creation.CreateSprintFragment;
+import ped.myscrum.edition.EditJobFragment;
 import ped.myscrum.gen.R;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -91,6 +92,7 @@ public class SprintsFragment extends Fragment {
 					project.add("User Stories");
 					project.add("Jobs");
 					project.add("Charts");
+					project.add("Edit Sprint");
 					listDataChild.put(listDataHeader.get(ctr), project);
 					
 					sprint_ids.add(t.getIdNum());
@@ -165,6 +167,14 @@ public class SprintsFragment extends Fragment {
 						break;
 					case 4:
 						fragment = new ChartFragment();
+						break;
+					case 5:
+						fragment = new EditJobFragment();
+						Bundle job_args = new Bundle();
+						job_args.putCharSequence("api_key", api_key);
+						job_args.putInt("project_id", Integer.valueOf(project_id));
+						job_args.putInt("sprint_id", sprint_ids.get(groupPosition));
+					    fragment.setArguments(job_args);
 						break;
 					default:
 						break;
@@ -265,6 +275,7 @@ public class SprintsFragment extends Fragment {
 				project.add("User Stories");
 				project.add("Jobs");
 				project.add("Charts");
+				project.add("Edit Sprint");
 				listDataChild.put(listDataHeader.get(i), project);
 				
 				sprints.getSprints().get(i).setStartDate("Start Date: " + data.getJSONObject(i).getString("start_date").substring(0, 10));

@@ -9,6 +9,7 @@ import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import ped.myscrum.gen.R;
@@ -30,6 +31,8 @@ public class EditSprintFragment extends Fragment{
 	
 	private CharSequence api_key;
 	private String project_id;
+	private String sprint_id;
+	private HashMap<String, String> user_story_ids;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,6 +43,7 @@ public class EditSprintFragment extends Fragment{
 		
 		api_key = getArguments().getString("api_key");
 		project_id = getArguments().getString("project_id");
+		sprint_id = getArguments().getString("sprint_id");
 		
 		final DatePicker date = (DatePicker) rootView.findViewById(R.id.start_date);	
 		final Spinner duration = (Spinner) rootView.findViewById(R.id.duration);
@@ -57,12 +61,12 @@ public class EditSprintFragment extends Fragment{
 
 		});
 
-		new SprintInformationRetrieval(date, duration, user_stories).execute("http://10.0.2.2:3000/api/owner/projects/" + project_id + "/project?api_key=" + api_key);
+		new SprintInformationRetrieval(date, duration, user_stories).execute("http://10.0.2.2:3000/api/owner/projects/" + project_id + "/sprints/" + sprint_id + "/show?api_key=" + api_key);
 		
 		submit.setOnClickListener(new OnClickListener() {	
 			@Override
 			public void onClick(View v) {
-				new PostSprint(date, duration, user_stories).execute("http://10.0.2.2:3000/api/owner/projects/" + project_id + "/edit?api_key=" + api_key);
+				new PostSprint(date, duration, user_stories).execute("http://10.0.2.2:3000/api/owner/projects/" + project_id + "/sprints/" + sprint_id + "/edit?api_key=" + api_key);
 				getFragmentManager().popBackStackImmediate();
 			}
 
@@ -108,7 +112,9 @@ public class EditSprintFragment extends Fragment{
 
 				conn.setDoOutput(true);
 				DataOutputStream wr = new DataOutputStream(conn.getOutputStream());
-				wr.writeBytes("sprint={\"start_date\":\"" + string_date + "\",\"duration\":\"" + duration.getSelectedItem() +  "\",\"updated_at\":\"" + dateFormat.format(updated_at) + "\"}");
+				wr.writeBytes("{sprint=[{\"start_date\":\"" + string_date + "\",\"duration\":\"" + duration.getSelectedItem().toString() 
+						+ "\",\"project_id\":\"" + project_id 
+						+ "\",\"updated_at\":\"" + dateFormat.format(updated_at) + "\"}], user_stories=[{\"user_story_id\":\"" + user_story_ids.get(user_stories.getSelectedItem()) + "\"}]}");
 				wr.flush();
 				wr.close();
 
@@ -169,6 +175,7 @@ public class EditSprintFragment extends Fragment{
 	    protected void onPostExecute(String result) {
 	        
 			super.onPostExecute(result);
+			user_story_ids = new HashMap<String, String>();
 	      
 			JsonParserFactory factory=JsonParserFactory.getInstance();
 	        JSONParser parser=factory.newJsonParser();

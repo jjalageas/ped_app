@@ -97,5 +97,6 @@
     <string name="user_stories">User Stories</string>
     <string name="repo">Repository</string>
     <string name="public_">Public</string>
+    <string name="status">Status</string>
     
 </resources>
