@@ -12,11 +12,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-
 import org.json.JSONArray;
 import org.json.JSONException;
-
 import ped.myscrum.gen.R;
+import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -162,7 +161,7 @@ public class CreateSprintFragment extends Fragment{
 
 		}
 
-
+		@SuppressLint("SimpleDateFormat")
 		protected String doInBackground(String... url){
 
 			String result = " ";

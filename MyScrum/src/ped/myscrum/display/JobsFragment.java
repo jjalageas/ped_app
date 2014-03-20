@@ -49,7 +49,6 @@ public class JobsFragment extends Fragment {
 	private CharSequence api_key;
 	private int project_id;
 	private int sprint_id;
-	private int job_id;
 	private Job jobs;
 
 	@Override

@@ -11,8 +11,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
 import ped.myscrum.gen.R;
+import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -23,7 +23,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.Spinner;
-
 import com.json.parsers.JSONParser;
 import com.json.parsers.JsonParserFactory;
 
@@ -89,7 +88,7 @@ public class EditSprintFragment extends Fragment{
 			this.user_stories = user_stories;
 		}
 
-
+		@SuppressLint("SimpleDateFormat")
 		protected String doInBackground(String... url){
 
 			String result = " ";
@@ -138,12 +137,10 @@ public class EditSprintFragment extends Fragment{
 		
 		DatePicker date;	
 		Spinner duration;
-		Spinner user_stories;
 		
 		public SprintInformationRetrieval(DatePicker date, Spinner duration, Spinner user_stories){
 			this.date = date;
 			this.duration = duration;
-			this.user_stories = user_stories;
 		}
 		
 		

@@ -84,7 +84,7 @@ public class TestsFragment extends Fragment {
 					
 					List<String> project = new ArrayList<String>();
 					
-					listDataHeader.add("Test #" + t.getId());
+					listDataHeader.add("Test " + t.getId());
 					project.add(t.getTitle());
 					project.add(t.getUserStoryId());
 					project.add(t.getState());
@@ -230,7 +230,7 @@ public class TestsFragment extends Fragment {
 			data = new JSONArray(result);
 			
 			for(int i=0; i<data.length(); i++){
-				listDataHeader.add("Test #" + String.valueOf(i+1));
+				listDataHeader.add("Test " + String.valueOf(i+1));
 				tests.getTests().add(new TestContent((String) data.getJSONObject(i).getString("id")));
 				test_ids.add(data.getJSONObject(i).getString("id"));
 			}

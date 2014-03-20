@@ -32,7 +32,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,7 +54,7 @@ public class SprintsFragment extends Fragment {
 	 public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	            Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		View rootView = inflater.inflate(R.layout.fragment_sprints, container, false);
+		final View rootView = inflater.inflate(R.layout.fragment_sprints, container, false);
 
 		expListView = (ExpandableListView) rootView.findViewById(R.id.lvExp);
 		api_key = getArguments().getString("api_key");
@@ -65,6 +64,7 @@ public class SprintsFragment extends Fragment {
 		listDataChild = new HashMap<String, List<String>>();
 		sprint_ids = new ArrayList<Integer>();
 		
+	
 		
 		ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
@@ -183,8 +183,6 @@ public class SprintsFragment extends Fragment {
 					FragmentManager fragmentManager = getFragmentManager();
 					fragmentManager.beginTransaction()
 					.replace(R.id.frame_container, fragment).addToBackStack(String.valueOf(childPosition)).commit();
-				} else {
-					Log.e("MainActivity", "Error in creating fragment");
 				}
 			
 				return false;
@@ -222,7 +220,6 @@ public class SprintsFragment extends Fragment {
 			listDataHeader = listHeader;
 			listDataChild = listChild;
 			expListView = listView;
-
 		}
 		
 		
@@ -260,9 +257,9 @@ public class SprintsFragment extends Fragment {
 			data = new JSONArray(result);
 			
 			for(int i=0; i<data.length(); i++){
-				listDataHeader.add("Sprint #" + (i+1));
+				listDataHeader.add("Sprint " + (i+1));
 				sprint_ids.add(Integer.valueOf(data.getJSONObject(i).getString("id").toString()));
-				sprints.getSprints().add(new SprintContent("Sprint #" + String.valueOf(i+1)));
+				sprints.getSprints().add(new SprintContent("Sprint " + String.valueOf(i+1)));
 			}
 			listDataHeader.add("Create New Sprint");
 			listDataHeader.add("Back to Projects");
