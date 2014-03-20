@@ -21,6 +21,7 @@ import org.json.JSONException;
 
 import ped.myscrum.adapter.ExpandableListAdapter;
 import ped.myscrum.creation.CreateTestFragment;
+import ped.myscrum.edition.EditTestFragment;
 import ped.myscrum.gen.R;
 import ped.myscrum.serialization.TestContent;
 import ped.myscrum.serialization.Tests;
@@ -47,6 +48,7 @@ public class TestsFragment extends Fragment {
 	private CharSequence api_key;
 	private String project_id;
 	private Tests tests;
+	private List<String> test_ids;
 
 	@Override
 	 public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -86,6 +88,7 @@ public class TestsFragment extends Fragment {
 					project.add(t.getTitle());
 					project.add(t.getUserStoryId());
 					project.add(t.getState());
+					project.add("Edit Test");
 					listDataChild.put(listDataHeader.get(ctr), project);
 					
 					System.out.println(tests.getTests().get(ctr).getId());
@@ -139,6 +142,17 @@ public class TestsFragment extends Fragment {
 						break;
 					case 1:
 						break;		
+					case 3:
+						Fragment fragment = new EditTestFragment();
+						Bundle tests_args = new Bundle();
+						tests_args.putCharSequence("api_key", api_key);
+						tests_args.putInt("project_id", Integer.valueOf(project_id));
+						tests_args.putInt("test_id", Integer.valueOf(test_ids.get(groupPosition)));
+					    fragment.setArguments(tests_args);
+					    FragmentManager fragmentManager = getFragmentManager();
+						fragmentManager.beginTransaction()
+						.replace(R.id.frame_container, fragment).addToBackStack(String.valueOf(groupPosition)).commit();
+						break;
 					default:
 						break;
 				}
@@ -209,6 +223,7 @@ public class TestsFragment extends Fragment {
 	        
 			super.onPostExecute(result);
 			tests = new Tests();
+			test_ids = new ArrayList<String>();
 	      
 			try{
 			JSONArray data;
@@ -217,6 +232,7 @@ public class TestsFragment extends Fragment {
 			for(int i=0; i<data.length(); i++){
 				listDataHeader.add("Test #" + String.valueOf(i+1));
 				tests.getTests().add(new TestContent((String) data.getJSONObject(i).getString("id")));
+				test_ids.add(data.getJSONObject(i).getString("id"));
 			}
 			listDataHeader.add("Create New Test");
 			listDataHeader.add("Back to Projects");
@@ -235,6 +251,7 @@ public class TestsFragment extends Fragment {
 					else
 						project.add("Failed");
 				
+				project.add("Edit Test");
 				listDataChild.put(listDataHeader.get(i), project);
 
 				tests.getTests().get(i).setTitle(data.getJSONObject(i).getString("title"));

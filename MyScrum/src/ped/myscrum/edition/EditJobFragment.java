@@ -7,8 +7,12 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import ped.myscrum.gen.R;
 import android.app.Fragment;
@@ -32,6 +36,7 @@ public class EditJobFragment extends Fragment{
 	private String project_id;
 	private String sprint_id;
 	private String job_id;
+	private HashMap<String, String> user_story_ids;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,6 +59,7 @@ public class EditJobFragment extends Fragment{
 		final EditText description = (EditText) rootView.findViewById(R.id.edit_desc);
 		final Spinner status = (Spinner) rootView.findViewById(R.id.spinner_status);
 		final EditText difficulty = (EditText) rootView.findViewById(R.id.edit_difficulty);
+		final Spinner user_stories = (Spinner) rootView.findViewById(R.id.spinner_us);
 		
 		Button submit = (Button) rootView.findViewById(R.id.submit);
 		Button back = (Button) rootView.findViewById(R.id.back);
@@ -72,12 +78,17 @@ public class EditJobFragment extends Fragment{
 		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		status.setAdapter(dataAdapter);
 		
+		List<String> user_stories_list = new ArrayList<String>();
+		ArrayAdapter<String> dataAdapter_user_stories = new ArrayAdapter<String>(this.getActivity(),
+				android.R.layout.simple_spinner_item, user_stories_list);
+		
+		new BacklogInformationRetrieval(user_stories_list, user_stories, dataAdapter_user_stories).execute("http://10.0.2.2:3000/api/owner/projects/" + project_id + "/user_stories?api_key=" + api_key);	
 		new JobInformationRetrieval(title, description, status, difficulty).execute("http://10.0.2.2:3000/api/owner/projects/" + project_id + "/sprints/" + sprint_id +"/jobs/" + job_id + "/show?api_key=" + api_key);
 		
 		submit.setOnClickListener(new OnClickListener() {	
 			@Override
 			public void onClick(View v) {
-				new PostJob(title, description, status, difficulty).execute("http://10.0.2.2:3000/api/owner/projects/" + project_id + "/sprints/" + sprint_id +"/jobs/" + job_id + "/edit_job?api_key=" + api_key);
+				new PostJob(title, description, status, difficulty, user_stories).execute("http://10.0.2.2:3000/api/owner/projects/" + project_id + "/sprints/" + sprint_id +"/jobs/" + job_id + "/edit_job?api_key=" + api_key);
 				getFragmentManager().popBackStackImmediate();
 			}
 
@@ -89,16 +100,18 @@ public class EditJobFragment extends Fragment{
 	
 	private class PostJob extends AsyncTask<String, String, String>{
 
-		EditText title;	
-		EditText description;
-		Spinner status;
-		EditText difficulty;
+		private EditText title;	
+		private EditText description;
+		private Spinner status;
+		private EditText difficulty;
+		private Spinner user_stories;
 
-		public PostJob(EditText title, EditText description, Spinner status, EditText difficulty){
+		public PostJob(EditText title, EditText description, Spinner status, EditText difficulty, Spinner user_stories){
 			this.title = title;
 			this.description = description;
 			this.status = status;
 			this.difficulty = difficulty;
+			this.user_stories = user_stories;
 
 		}
 
@@ -115,7 +128,7 @@ public class EditJobFragment extends Fragment{
 				status_string = "todo";
 			else
 				if(status.getSelectedItem().equals("In Progress"))
-					status_string = "inprogress";
+					status_string = "in progress";
 				else
 					status_string ="done";
 			
@@ -132,7 +145,7 @@ public class EditJobFragment extends Fragment{
 				conn.setDoOutput(true);
 				DataOutputStream wr = new DataOutputStream(conn.getOutputStream());
 				wr.writeBytes("job={\"title\":\"" + title.getText() + "\",\"description\":\"" + description.getText() 
-						+ "\",\"status\":\"" + status_string + "\",\"difficulty\":\"" + difficulty.getText() + "\"}");
+						+ "\",\"status\":\"" + status_string + "\",\"difficulty\":\"" + difficulty.getText() + user_story_ids.get(user_stories.getSelectedItem()) + "\"}");
 				wr.flush();
 				wr.close();
 
@@ -208,5 +221,69 @@ private class JobInformationRetrieval extends AsyncTask<String, String, String>{
 	    }
 		
 	}
+
+private class BacklogInformationRetrieval extends AsyncTask<String, String, String>{
+
+
+	private Spinner user_stories;
+	private List<String> user_stories_list;
+	private ArrayAdapter<String> dataAdapter;
+
+
+	public BacklogInformationRetrieval(List<String> list, Spinner spinner, ArrayAdapter<String> adapter){
+		user_stories_list = list;
+		user_stories = spinner;
+		dataAdapter = adapter;
+	}
+
+
+	@Override
+	protected String doInBackground(String... url){
+		String result = " ";
+		URL url_init;
+		HttpURLConnection conn;
+		BufferedReader rd;
+		String line;
+		try{
+			url_init = new URL(url[0]);
+			conn = (HttpURLConnection) url_init.openConnection();
+			conn.setRequestMethod("GET");
+			rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			while ((line = rd.readLine()) != null) {
+				result += line;
+			}
+			rd.close();
+		}catch (IOException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+
+	@Override
+	protected void onPostExecute(String result) {
+
+		super.onPostExecute(result);
+		user_story_ids = new HashMap<String, String>();
+
+		JSONArray data;
+		try {
+			data = new JSONArray(result);
+			for(int i=0; i<data.length(); i++){
+				user_stories_list.add(data.getJSONObject(i).getString("title"));
+				user_story_ids.put(data.getJSONObject(i).getString("title"), data.getJSONObject(i).getString("id"));
+			}
+			dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			user_stories.setAdapter(dataAdapter);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
+
+
+
+	}
+}
+
 		
 }

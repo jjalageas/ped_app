@@ -241,7 +241,7 @@ public class JobsFragment extends Fragment {
 			data = new JSONArray(result);
 			
 			for(int i=0; i<data.length(); i++){
-				listDataHeader.add("Job #" + data.getJSONObject(i).getString("id"));
+				listDataHeader.add("Job #" + (i+1));
 				jobs.getJobs().add(new JobContent("Job #" + data.getJSONObject(i).getString("id")));
 				job_ids.add(data.getJSONObject(i).getString("id"));
 			}
