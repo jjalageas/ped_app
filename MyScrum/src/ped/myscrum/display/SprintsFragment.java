@@ -12,7 +12,11 @@ import java.io.ObjectOutputStream;
 import java.io.StreamCorruptedException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -28,6 +32,7 @@ import ped.myscrum.gen.R;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -45,6 +50,7 @@ public class SprintsFragment extends Fragment {
 	private ExpandableListView expListView;
 	private List<String> listDataHeader;
 	private HashMap<String, List<String>> listDataChild;
+	private HashMap<String, String> finished_sprints;
 	private CharSequence api_key;
 	private String project_id;
 	private List<Integer> sprint_ids;
@@ -112,6 +118,7 @@ public class SprintsFragment extends Fragment {
 			}
 		}  
 		
+		
 		expListView.setOnGroupClickListener(new OnGroupClickListener() {
 
 			@Override
@@ -148,6 +155,14 @@ public class SprintsFragment extends Fragment {
 					case 0:
 						break;
 					case 1:
+						System.out.println("############");
+						
+						expListView.getChildAt(0).setBackgroundColor(Color.RED);
+						for(int i=0; i<10; i++)
+							System.out.println(expListView.getChildAt(i));
+						
+						System.out.println(expListView.getLastVisiblePosition());
+						System.out.println(expListView.getFirstVisiblePosition());
 						break;
 					case 2:
 						fragment = new SprintsUserStoriesFragment();
@@ -251,6 +266,7 @@ public class SprintsFragment extends Fragment {
 	        
 			super.onPostExecute(result);
 			sprints = new Sprints();
+			finished_sprints = new HashMap<String, String>();
 	      
 			try{
 			JSONArray data;
@@ -267,6 +283,21 @@ public class SprintsFragment extends Fragment {
 			
 			for(int i=0; i< listDataHeader.size()-2; i++){
 				List<String> project = new ArrayList<String>();
+				
+				String date = data.getJSONObject(i).getString("start_date").substring(0, 10);
+				
+				String string_date = date.substring(0,4) + "/"+  date.substring(5,7) +  "/"+  date.substring(8,10);		
+				DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+				Date today = new Date();
+				Date sprint_creation = dateFormat.parse(string_date);
+				final long DAY_IN_MILLIS = 1000 * 60 * 60 * 24;
+				int diffInDays = (int) ((today.getTime() - sprint_creation.getTime())/ DAY_IN_MILLIS );
+				if(diffInDays > Integer.valueOf(data.getJSONObject(i).getString("duration")))
+					finished_sprints.put(String.valueOf(i), "finished");
+				else
+					finished_sprints.put(String.valueOf(i), "not_finished");
+					
+				
 				project.add("Start Date: " + data.getJSONObject(i).getString("start_date").substring(0, 10));
 				project.add("Duration: " + data.getJSONObject(i).getString("duration"));
 				project.add("User Stories");
@@ -278,21 +309,44 @@ public class SprintsFragment extends Fragment {
 				sprints.getSprints().get(i).setStartDate("Start Date: " + data.getJSONObject(i).getString("start_date").substring(0, 10));
 				sprints.getSprints().get(i).setDuration("Duration: " + data.getJSONObject(i).getString("duration"));
 				sprints.getSprints().get(i).setIdNum(Integer.valueOf(data.getJSONObject(i).getString("id").toString()));
+				
 			}
 			} catch (JSONException e) {
+				e.printStackTrace();
+			} catch (ParseException e) {
 				e.printStackTrace();
 			}
 
 
-			listAdapter = new ExpandableListAdapter(SprintsFragment.this, listDataHeader, listDataChild);
+			listAdapter = new ExpandableListAdapter(SprintsFragment.this, listDataHeader, listDataChild) {
+				@Override
+				public View getGroupView(int position, boolean b, View convertView, android.view.ViewGroup parent) {
+					View result = super.getGroupView(position, false, convertView, parent);
+					if(b == false){
+						for(int i=0; i<finished_sprints.size(); i++)
+							if(finished_sprints.get(String.valueOf(i)).equals("finished") && position == i){
+								System.out.println(finished_sprints.get(String.valueOf(i)));
+								result.setBackgroundColor(Color.DKGRAY);
+							} else {
+								if(position == (finished_sprints.size()) || position == (finished_sprints.size() + 1))
+										result.setBackgroundColor(Color.BLACK);
+									
+							}
+
+					}
+					if(position == (finished_sprints.size()) || position == (finished_sprints.size() + 1))
+						result.setBackgroundColor(Color.BLACK);
+					return result;
+				}
+			};
+
 			this.expListView.setAdapter(listAdapter);
-			
+
 			try {
 				save_data();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			
 			
 	    }
 		

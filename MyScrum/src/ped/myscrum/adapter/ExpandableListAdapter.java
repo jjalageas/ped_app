@@ -6,6 +6,7 @@ import java.util.List;
 import ped.myscrum.gen.R;
 import android.app.Fragment;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -94,7 +95,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 				.findViewById(R.id.lblListHeader);
 		lblListHeader.setTypeface(null, Typeface.BOLD);
 		lblListHeader.setText(headerTitle);
-
 		return convertView;
 	}
 
