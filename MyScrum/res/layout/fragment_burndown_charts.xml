@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bd_container"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:orientation="vertical"
+    android:background="@android:color/white" >
+    
+    <TextView
+        android:id="@+id/bd_title"
+        android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+    	android:text="@string/burndown_chart"
+    	android:adjustViewBounds="true"
+    	android:textSize="25sp"
+    	/>
+    
+    <ImageView
+        android:id="@+id/bd_image"
+    	android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+    	android:adjustViewBounds="true"
+    	android:contentDescription="@string/burndown_chart"
+    	/>
+    
+    <TextView
+        android:id="@+id/task_dist_title"
+        android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+    	android:text="@string/task_distribution"
+    	android:adjustViewBounds="true"
+    	android:textSize="25sp"
+    	/>
+    
+    <ImageView
+        android:id="@+id/task_dist_image"
+    	android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+    	android:adjustViewBounds="true"
+    	android:contentDescription="@string/task_distribution"
+    	/>
+
+</LinearLayout>
