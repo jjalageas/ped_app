@@ -6,16 +6,16 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
-
 import org.json.JSONArray;
 import org.json.JSONException;
-
 import ped.myscrum.gen.R;
+import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -32,6 +32,7 @@ public class CreateSprintFragment extends Fragment{
 
 	private String api_key;
 	private int project_id;
+	private HashMap<String, String> user_story_ids;
 
 	public CreateSprintFragment(){}
 
@@ -126,12 +127,14 @@ public class CreateSprintFragment extends Fragment{
 		protected void onPostExecute(String result) {
 
 			super.onPostExecute(result);
+			user_story_ids = new HashMap<String, String>();
 
 			JSONArray data;
 			try {
 				data = new JSONArray(result);
 				for(int i=0; i<data.length(); i++){
 					user_stories_list.add(data.getJSONObject(i).getString("title"));
+					user_story_ids.put(data.getJSONObject(i).getString("title"), data.getJSONObject(i).getString("id"));
 				}
 				dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 				user_stories.setAdapter(dataAdapter);
@@ -158,7 +161,7 @@ public class CreateSprintFragment extends Fragment{
 
 		}
 
-
+		@SuppressLint("SimpleDateFormat")
 		protected String doInBackground(String... url){
 
 			String result = " ";
@@ -181,8 +184,9 @@ public class CreateSprintFragment extends Fragment{
 
 				conn.setDoOutput(true);
 				DataOutputStream wr = new DataOutputStream(conn.getOutputStream());
-				wr.writeBytes("sprint={\"start_date\":\"" + string_date + "\",\"duration\":\"" + duration.getSelectedItem().toString() 
-						+ "\",\"project_id\":\"" + project_id + "\",\"created_at\":\"" + dateFormat.format(created_at) + "\",\"updated_at\":\"" + dateFormat.format(created_at) + "\"}");
+				wr.writeBytes("{sprint=[{\"start_date\":\"" + string_date + "\",\"duration\":\"" + duration.getSelectedItem().toString() 
+						+ "\",\"project_id\":\"" + project_id + "\",\"created_at\":\"" + dateFormat.format(created_at) 
+						+ "\",\"updated_at\":\"" + dateFormat.format(created_at) + "\"}], user_stories=[{\"user_story_id\":\"" + user_story_ids.get(user_stories.getSelectedItem()) + "\"}]}");
 				wr.flush();
 				wr.close();
 

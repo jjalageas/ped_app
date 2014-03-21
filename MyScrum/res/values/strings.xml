@@ -99,5 +99,6 @@
     <string name="public_">Public</string>
     <string name="burndown_chart">Burndown Chart</string>
     <string name="task_distribution">Task Completion Distribution</string>
+    <string name="status">Status</string>
     
 </resources>

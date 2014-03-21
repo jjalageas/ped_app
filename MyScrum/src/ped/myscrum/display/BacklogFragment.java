@@ -232,8 +232,8 @@ public class BacklogFragment extends Fragment {
 			data = new JSONArray(result);
 			
 			for(int i=0; i<data.length(); i++){
-				listDataHeader.add("User Story #" + data.getJSONObject(i).getString("id"));
-				backlog.getBacklog().add(new BacklogContent("User Story #" + (String) data.getJSONObject(i).getString("id")));
+				listDataHeader.add("User Story " + (i+1));
+				backlog.getBacklog().add(new BacklogContent("User Story " + (i+1)));
 				user_story_ids.add(data.getJSONObject(i).getString("id"));
 			}
 			listDataHeader.add("Create New User Story");

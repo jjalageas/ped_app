@@ -20,10 +20,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import ped.myscrum.adapter.ExpandableListAdapter;
+import ped.myscrum.edition.EditJobFragment;
 import ped.myscrum.gen.R;
 import ped.myscrum.serialization.Job;
+import ped.myscrum.creation.CreateJobFragment;
 import ped.myscrum.serialization.JobContent;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -41,7 +44,8 @@ public class JobsFragment extends Fragment {
 	private ExpandableListAdapter listAdapter;
 	private ExpandableListView expListView;
 	private List<String> listDataHeader;
-	HashMap<String, List<String>> listDataChild;
+	private HashMap<String, List<String>> listDataChild;
+	private List<String> job_ids;
 	private CharSequence api_key;
 	private int project_id;
 	private int sprint_id;
@@ -85,11 +89,13 @@ public class JobsFragment extends Fragment {
 					project.add(t.getDescription());
 					project.add(t.getDifficulty());
 					project.add(t.getFinished());
+					project.add("Edit Job");
 					listDataChild.put(listDataHeader.get(ctr), project);
 					
 					ctr++;
 				}
-				listDataHeader.add("Back to Projects");
+				listDataHeader.add("Create New Job");
+				listDataHeader.add("Back to Sprints");
 				
 				listAdapter = new ExpandableListAdapter(JobsFragment.this, listDataHeader, listDataChild);
 				this.expListView.setAdapter(listAdapter);
@@ -107,9 +113,22 @@ public class JobsFragment extends Fragment {
 			@Override
 			public boolean onGroupClick(ExpandableListView parent, View v,
 					int groupPosition, long id) {
+				Fragment fragment;
 				if(groupPosition == listDataHeader.size()-1){
 					getFragmentManager().popBackStackImmediate();
 				}
+				else
+					if(groupPosition == listDataHeader.size()-2){
+						fragment = new CreateJobFragment();
+						Bundle pro_args = new Bundle();
+						pro_args.putCharSequence("api_key", api_key);
+						pro_args.putCharSequence("project_id", String.valueOf(project_id));
+						pro_args.putCharSequence("sprint_id", String.valueOf(sprint_id));
+						fragment.setArguments(pro_args);
+						FragmentManager fragmentManager = getFragmentManager();
+						fragmentManager.beginTransaction()
+						.replace(R.id.frame_container, fragment).addToBackStack(String.valueOf(groupPosition)).commit();
+					}
 				return false;
 			}
 		});
@@ -121,6 +140,7 @@ public class JobsFragment extends Fragment {
 			@Override
 			public boolean onChildClick(ExpandableListView parent, View v,
 					int groupPosition, int childPosition, long id) {
+				Fragment fragment;
 				switch (childPosition) {
 					case 0:
 						break;
@@ -129,6 +149,18 @@ public class JobsFragment extends Fragment {
 					case 2:
 						break;
 					case 3:
+						break;
+					case 4:
+						fragment = new EditJobFragment();
+						Bundle pro_args = new Bundle();
+						pro_args.putCharSequence("api_key", api_key);
+						pro_args.putCharSequence("project_id", String.valueOf(project_id));
+						pro_args.putCharSequence("sprint_id", String.valueOf(sprint_id));
+						pro_args.putCharSequence("job_id", job_ids.get(groupPosition));
+						fragment.setArguments(pro_args);
+						FragmentManager fragmentManager = getFragmentManager();
+						fragmentManager.beginTransaction()
+						.replace(R.id.frame_container, fragment).addToBackStack(String.valueOf(groupPosition)).commit();
 						break;
 					default:
 						break;
@@ -200,6 +232,7 @@ public class JobsFragment extends Fragment {
 	    protected void onPostExecute(String result) {
 	        
 			super.onPostExecute(result);
+			job_ids = new ArrayList<String>();
 			jobs = new Job();
 	      
 			try{
@@ -207,13 +240,15 @@ public class JobsFragment extends Fragment {
 			data = new JSONArray(result);
 			
 			for(int i=0; i<data.length(); i++){
-				listDataHeader.add("Job #" + data.getJSONObject(i).getString("id"));
+				listDataHeader.add("Job #" + (i+1));
 				jobs.getJobs().add(new JobContent("Job #" + data.getJSONObject(i).getString("id")));
+				job_ids.add(data.getJSONObject(i).getString("id"));
 			}
+			listDataHeader.add("Create New Job");
 			listDataHeader.add("Back to Sprints");
 		
 			
-			for(int i=0; i< listDataHeader.size()-1; i++){
+			for(int i=0; i< listDataHeader.size()-2; i++){
 				List<String> project = new ArrayList<String>();
 				project.add(data.getJSONObject(i).getString("title"));
 				project.add(data.getJSONObject(i).getString("description"));
@@ -225,6 +260,7 @@ public class JobsFragment extends Fragment {
 						project.add("Status: Done");
 					else 
 						project.add("Status: In Progress");
+				project.add("Edit Job");
 				listDataChild.put(listDataHeader.get(i), project);
 				
 				

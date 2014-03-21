@@ -23,17 +23,14 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.webkit.WebView;
-import android.widget.Button;
-import android.widget.TextView;
 
 public class DescriptionFragment extends Fragment{
 
 	private CharSequence api_key;
 	private String project_id;
-	private Button back;
+	//private Button back;
 	private ProjectDescription pd;
 	
 	public DescriptionFragment(){}
