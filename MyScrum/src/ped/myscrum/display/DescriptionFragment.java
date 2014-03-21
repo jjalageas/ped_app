@@ -23,14 +23,16 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.widget.Button;
 
 public class DescriptionFragment extends Fragment{
 
 	private CharSequence api_key;
 	private String project_id;
-	//private Button back;
+	private Button back;
 	private ProjectDescription pd;
 	
 	public DescriptionFragment(){}
@@ -43,14 +45,14 @@ public class DescriptionFragment extends Fragment{
 		project_id = getArguments().getString("project_id");
 
 		View rootView = inflater.inflate(R.layout.fragment_project_description, container, false);
-	/*	back = (Button) rootView.findViewById(R.id.back);  
+		back = (Button) rootView.findViewById(R.id.back);  
 
 		back.setOnClickListener(new OnClickListener() {			
 			@Override
 			public void onClick(View v) {
 				getFragmentManager().popBackStackImmediate();
 			}
-		});*/
+		});
 
 		WebView description = (WebView) rootView.findViewById(R.id.description);
 		
