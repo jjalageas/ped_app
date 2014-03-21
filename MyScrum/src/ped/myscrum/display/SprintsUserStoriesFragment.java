@@ -75,9 +75,6 @@ public class SprintsUserStoriesFragment extends Fragment {
 				backlog = load_data(new File(this.getActivity().getFilesDir() + "backlog_" + project_id + sprint_id +".bin"));
 				int ctr = 0;
 				
-				System.out.println("//////////////////:");
-				System.out.println(backlog.getBacklog().size());
-				System.out.println(backlog.getBacklog().get(0).getDescription());
 				listDataHeader = new ArrayList<String>();
 				listDataChild = new HashMap<String, List<String>>();
 				
@@ -208,8 +205,8 @@ public class SprintsUserStoriesFragment extends Fragment {
 			data = new JSONArray(result);
 			
 			for(int i=0; i<data.length(); i++){
-				listDataHeader.add("User Story #" + data.getJSONObject(i).getString("id"));
-				backlog.getBacklog().add(new BacklogContent("User Story #" + (String) data.getJSONObject(i).getString("id")));
+				listDataHeader.add("User Story " + data.getJSONObject(i).getString("id"));
+				backlog.getBacklog().add(new BacklogContent("User Story " + (String) data.getJSONObject(i).getString("id")));
 			}
 			listDataHeader.add("Back to Sprints");
 			
