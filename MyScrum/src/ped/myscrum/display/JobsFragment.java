@@ -20,14 +20,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import ped.myscrum.adapter.ExpandableListAdapter;
+import ped.myscrum.creation.CreateJobFragment;
 import ped.myscrum.edition.EditJobFragment;
 import ped.myscrum.gen.R;
 import ped.myscrum.serialization.Job;
-import ped.myscrum.creation.CreateJobFragment;
 import ped.myscrum.serialization.JobContent;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -45,6 +46,7 @@ public class JobsFragment extends Fragment {
 	private ExpandableListView expListView;
 	private List<String> listDataHeader;
 	private HashMap<String, List<String>> listDataChild;
+	private HashMap<String, String> finished_jobs;
 	private List<String> job_ids;
 	private CharSequence api_key;
 	private int project_id;
@@ -234,14 +236,15 @@ public class JobsFragment extends Fragment {
 			super.onPostExecute(result);
 			job_ids = new ArrayList<String>();
 			jobs = new Job();
+			finished_jobs = new HashMap<String, String>();
 	      
 			try{
 			JSONArray data;
 			data = new JSONArray(result);
 			
 			for(int i=0; i<data.length(); i++){
-				listDataHeader.add("Job #" + (i+1));
-				jobs.getJobs().add(new JobContent("Job #" + data.getJSONObject(i).getString("id")));
+				listDataHeader.add("Job " + (i+1));
+				jobs.getJobs().add(new JobContent("Job " + data.getJSONObject(i).getString("id")));
 				job_ids.add(data.getJSONObject(i).getString("id"));
 			}
 			listDataHeader.add("Create New Job");
@@ -253,15 +256,23 @@ public class JobsFragment extends Fragment {
 				project.add(data.getJSONObject(i).getString("title"));
 				project.add(data.getJSONObject(i).getString("description"));
 				project.add("Difficulty: " + data.getJSONObject(i).getString("difficulty"));
-				if(data.getJSONObject(i).getString("status").equals("todo"))
+				if(data.getJSONObject(i).getString("status").equals("todo")){
 					project.add("Status: To Do");
+					finished_jobs.put(String.valueOf(i), "to_do");
+				}
 				else 
-					if(data.getJSONObject(i).getString("status").equals("done"))
+					if(data.getJSONObject(i).getString("status").equals("done")){
 						project.add("Status: Done");
-					else 
+						finished_jobs.put(String.valueOf(i), "done");
+					}
+					else {
 						project.add("Status: In Progress");
+						finished_jobs.put(String.valueOf(i), "in_progress");
+					}
 				project.add("Edit Job");
 				listDataChild.put(listDataHeader.get(i), project);
+				
+
 				
 				
 				jobs.getJobs().get(i).setTitle(data.getJSONObject(i).getString("title"));
@@ -276,13 +287,70 @@ public class JobsFragment extends Fragment {
 					else 
 						project.add("Status: In Progress");
 				
+				
+				
 			}
+
+			for(int i=0; i<data.length(); i++){
+				List<String> project = new ArrayList<String>();
+				if(finished_jobs.get(String.valueOf(i)).equals("done"))
+					listDataHeader.set(i, listDataHeader.get(i) + ("     DONE"));
+				if(finished_jobs.get(String.valueOf(i)).equals("in_progress"))
+					listDataHeader.set(i, listDataHeader.get(i) + ("     In Progress"));
+				if(finished_jobs.get(String.valueOf(i)).equals("to_do"))
+					listDataHeader.set(i, listDataHeader.get(i) + ("     TO DO"));
+
+				project.add(data.getJSONObject(i).getString("title"));
+				project.add(data.getJSONObject(i).getString("description"));
+				project.add("Difficulty: " + data.getJSONObject(i).getString("difficulty"));
+				if(data.getJSONObject(i).getString("status").equals("todo")){
+					project.add("Status: To Do");
+				}
+				else 
+					if(data.getJSONObject(i).getString("status").equals("done")){
+						project.add("Status: Done");
+					}
+					else {
+						project.add("Status: In Progress");
+					}
+				project.add("Edit Job");
+				listDataChild.put(listDataHeader.get(i), project);
+				}
+			
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
 
+			for(int i=0; i<finished_jobs.size(); i++)	
+				System.out.println(finished_jobs.get(String.valueOf(i)));
+			
+			listAdapter = new ExpandableListAdapter(JobsFragment.this, listDataHeader, listDataChild) {
+				@Override
+				public View getGroupView(int position, boolean b, View convertView, android.view.ViewGroup parent) {
+					View result = super.getGroupView(position, false, convertView, parent);
+					if(b == false){
+						for(int i=0; i<finished_jobs.size(); i++)	
+							if(finished_jobs.get(String.valueOf(i)).equals("done") && position == i){
+								result.setBackgroundColor(Color.rgb(46, 139, 87));
+							} 
+							else {
+								if(position == (finished_jobs.size()) || position == (finished_jobs.size() + 1))
+										result.setBackgroundColor(Color.BLACK);
+								else{
+									if(finished_jobs.get(String.valueOf(i)).equals("to_do") && position == i)
+										result.setBackgroundColor(Color.rgb(165, 42, 42));
+									if(finished_jobs.get(String.valueOf(i)).equals("in_progress") && position == i)
+										result.setBackgroundColor(Color.rgb(255, 140, 0));
+								}
+							}
 
-			listAdapter = new ExpandableListAdapter(JobsFragment.this, listDataHeader, listDataChild);
+					}
+					if(position == (finished_jobs.size()) || position == (finished_jobs.size() + 1))
+						result.setBackgroundColor(Color.BLACK);
+					return result;
+				}
+			};
+			
 			this.expListView.setAdapter(listAdapter);
 			
 			try {

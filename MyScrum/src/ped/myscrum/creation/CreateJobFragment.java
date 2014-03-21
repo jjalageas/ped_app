@@ -70,7 +70,7 @@ public class CreateJobFragment extends Fragment{
 
 		});
 		
-		new BacklogInformationRetrieval(user_stories_list, user_stories, dataAdapter_user_stories).execute("http://10.0.2.2:3000/api/owner/projects/" + project_id + "/user_stories?api_key=" + api_key);
+		new BacklogInformationRetrieval(user_stories_list, user_stories, dataAdapter_user_stories).execute("http://10.0.2.2:3000/api/owner/projects/" + project_id + "/sprints/" + sprint_id + "/user_stories?api_key=" + api_key);
 		
 		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this.getActivity(),
 				android.R.layout.simple_spinner_item, status_list);
@@ -138,7 +138,9 @@ public class CreateJobFragment extends Fragment{
 				conn.setDoOutput(true);
 				DataOutputStream wr = new DataOutputStream(conn.getOutputStream());
 				wr.writeBytes("job={\"title\":\"" + title.getText() + "\",\"description\":\"" + description.getText() 
-						+ "\",\"status\":\"" + status_string + "\",\"difficulty\":\"" + difficulty.getText() + "\",\"user_story_id\":\"" + user_story_ids.get(user_stories.getSelectedItem()) + "\"}");
+						+ "\",\"status\":\"" + status_string + "\",\"difficulty\":\"" + difficulty.getText() 
+						+ "\",\"user_story_id\":\"" + user_story_ids.get(user_stories.getSelectedItem()) 
+						+ "\"}");
 				wr.flush();
 				wr.close();
 

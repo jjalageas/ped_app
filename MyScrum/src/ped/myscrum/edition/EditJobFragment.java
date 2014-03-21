@@ -82,7 +82,7 @@ public class EditJobFragment extends Fragment{
 		ArrayAdapter<String> dataAdapter_user_stories = new ArrayAdapter<String>(this.getActivity(),
 				android.R.layout.simple_spinner_item, user_stories_list);
 		
-		new BacklogInformationRetrieval(user_stories_list, user_stories, dataAdapter_user_stories).execute("http://10.0.2.2:3000/api/owner/projects/" + project_id + "/user_stories?api_key=" + api_key);	
+		new BacklogInformationRetrieval(user_stories_list, user_stories, dataAdapter_user_stories).execute("http://10.0.2.2:3000/api/owner/projects/" + project_id + "/sprints/" + sprint_id + "/user_stories?api_key=" + api_key);	
 		new JobInformationRetrieval(title, description, status, difficulty).execute("http://10.0.2.2:3000/api/owner/projects/" + project_id + "/sprints/" + sprint_id +"/jobs/" + job_id + "/show?api_key=" + api_key);
 		
 		submit.setOnClickListener(new OnClickListener() {	

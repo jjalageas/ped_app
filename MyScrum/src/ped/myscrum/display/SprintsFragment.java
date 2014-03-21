@@ -28,6 +28,7 @@ import ped.myscrum.serialization.SprintContent;
 import ped.myscrum.serialization.Sprints;
 import ped.myscrum.creation.CreateSprintFragment;
 import ped.myscrum.edition.EditJobFragment;
+import ped.myscrum.edition.EditSprintFragment;
 import ped.myscrum.gen.R;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -182,9 +183,14 @@ public class SprintsFragment extends Fragment {
 						break;
 					case 4:
 						fragment = new ChartFragment();
+						Bundle chart_args = new Bundle();
+						chart_args.putCharSequence("api_key", api_key);
+						chart_args.putInt("project_id", Integer.valueOf(project_id));
+						chart_args.putInt("sprint_id", sprint_ids.get(groupPosition));
+					    fragment.setArguments(chart_args);
 						break;
 					case 5:
-						fragment = new EditJobFragment();
+						fragment = new EditSprintFragment();
 						Bundle job_args = new Bundle();
 						job_args.putCharSequence("api_key", api_key);
 						job_args.putInt("project_id", Integer.valueOf(project_id));
@@ -309,13 +315,29 @@ public class SprintsFragment extends Fragment {
 				sprints.getSprints().get(i).setStartDate("Start Date: " + data.getJSONObject(i).getString("start_date").substring(0, 10));
 				sprints.getSprints().get(i).setDuration("Duration: " + data.getJSONObject(i).getString("duration"));
 				sprints.getSprints().get(i).setIdNum(Integer.valueOf(data.getJSONObject(i).getString("id").toString()));
-				
+
+			}
+
+			for(int i=0; i<data.length(); i++){
+				if(finished_sprints.get(String.valueOf(i)).equals("finished")){
+					List<String> project = new ArrayList<String>();
+					listDataHeader.set(i, listDataHeader.get(i) + ("     DONE"));
+					project.add("Start Date: " + data.getJSONObject(i).getString("start_date").substring(0, 10));
+					project.add("Duration: " + data.getJSONObject(i).getString("duration"));
+					project.add("User Stories");
+					project.add("Jobs");
+					project.add("Charts");
+					project.add("Edit Sprint");
+					listDataChild.put(listDataHeader.get(i), project);
+				}
+
 			}
 			} catch (JSONException e) {
 				e.printStackTrace();
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
+			
 
 
 			listAdapter = new ExpandableListAdapter(SprintsFragment.this, listDataHeader, listDataChild) {
@@ -325,12 +347,15 @@ public class SprintsFragment extends Fragment {
 					if(b == false){
 						for(int i=0; i<finished_sprints.size(); i++)
 							if(finished_sprints.get(String.valueOf(i)).equals("finished") && position == i){
-								System.out.println(finished_sprints.get(String.valueOf(i)));
 								result.setBackgroundColor(Color.DKGRAY);
-							} else {
+							} 
+							else {
 								if(position == (finished_sprints.size()) || position == (finished_sprints.size() + 1))
 										result.setBackgroundColor(Color.BLACK);
-									
+								else{
+									if(finished_sprints.get(String.valueOf(i)).equals("not_finished") && position == i)
+										result.setBackgroundColor(Color.GRAY);
+								}
 							}
 
 					}

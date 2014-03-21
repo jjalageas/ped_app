@@ -184,9 +184,11 @@ public class CreateSprintFragment extends Fragment{
 
 				conn.setDoOutput(true);
 				DataOutputStream wr = new DataOutputStream(conn.getOutputStream());
-				wr.writeBytes("{sprint=[{\"start_date\":\"" + string_date + "\",\"duration\":\"" + duration.getSelectedItem().toString() 
-						+ "\",\"project_id\":\"" + project_id + "\",\"created_at\":\"" + dateFormat.format(created_at) 
-						+ "\",\"updated_at\":\"" + dateFormat.format(created_at) + "\"}], user_stories=[{\"user_story_id\":\"" + user_story_ids.get(user_stories.getSelectedItem()) + "\"}]}");
+				
+				wr.writeBytes("Object={\"sprint\": {\"created_at\": \"" + dateFormat.format(created_at) + "\",\"duration\": "
+			        		+ "\"" + duration.getSelectedItem().toString() +  "\",\"project_id\": \"" + project_id + "\",\"start_date\": \""+ string_date +"\"}, \"user_stories\": "
+			        		+ "{\"user_story_id\": \"" + user_story_ids.get(user_stories.getSelectedItem()) + "\"}} ");
+				
 				wr.flush();
 				wr.close();
 
