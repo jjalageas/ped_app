@@ -39,6 +39,7 @@ import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ExpandableListView.OnGroupClickListener;
+import android.widget.TextView;
 
 public class JobsFragment extends Fragment {
 
@@ -294,7 +295,7 @@ public class JobsFragment extends Fragment {
 			for(int i=0; i<data.length(); i++){
 				List<String> project = new ArrayList<String>();
 				if(finished_jobs.get(String.valueOf(i)).equals("done"))
-					listDataHeader.set(i, listDataHeader.get(i) + ("     DONE"));
+					listDataHeader.set(i, listDataHeader.get(i) + ("     Done"));
 				if(finished_jobs.get(String.valueOf(i)).equals("in_progress"))
 					listDataHeader.set(i, listDataHeader.get(i) + ("     In Progress"));
 				if(finished_jobs.get(String.valueOf(i)).equals("to_do"))
@@ -328,19 +329,21 @@ public class JobsFragment extends Fragment {
 				@Override
 				public View getGroupView(int position, boolean b, View convertView, android.view.ViewGroup parent) {
 					View result = super.getGroupView(position, false, convertView, parent);
+					TextView tv = (TextView) result.findViewById(R.id.lblListHeader);
 					if(b == false){
 						for(int i=0; i<finished_jobs.size(); i++)	
 							if(finished_jobs.get(String.valueOf(i)).equals("done") && position == i){
-								result.setBackgroundColor(Color.rgb(46, 139, 87));
+								result.setBackgroundColor(Color.GRAY);
+								tv.setTextColor(Color.GREEN);
 							} 
 							else {
 								if(position == (finished_jobs.size()) || position == (finished_jobs.size() + 1))
 										result.setBackgroundColor(Color.BLACK);
 								else{
 									if(finished_jobs.get(String.valueOf(i)).equals("to_do") && position == i)
-										result.setBackgroundColor(Color.rgb(165, 42, 42));
+										result.setBackgroundColor(Color.GRAY);
 									if(finished_jobs.get(String.valueOf(i)).equals("in_progress") && position == i)
-										result.setBackgroundColor(Color.rgb(255, 140, 0));
+										result.setBackgroundColor(Color.GRAY);
 								}
 							}
 

@@ -27,9 +27,9 @@ import ped.myscrum.adapter.ExpandableListAdapter;
 import ped.myscrum.serialization.SprintContent;
 import ped.myscrum.serialization.Sprints;
 import ped.myscrum.creation.CreateSprintFragment;
-import ped.myscrum.edition.EditJobFragment;
 import ped.myscrum.edition.EditSprintFragment;
 import ped.myscrum.gen.R;
+import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
@@ -267,7 +267,7 @@ public class SprintsFragment extends Fragment {
 		}
 		
 		
-		@Override
+		@SuppressLint("SimpleDateFormat") @Override
 	    protected void onPostExecute(String result) {
 	        
 			super.onPostExecute(result);
@@ -347,7 +347,7 @@ public class SprintsFragment extends Fragment {
 					if(b == false){
 						for(int i=0; i<finished_sprints.size(); i++)
 							if(finished_sprints.get(String.valueOf(i)).equals("finished") && position == i){
-								result.setBackgroundColor(Color.DKGRAY);
+								result.setBackgroundColor(Color.GRAY);
 							} 
 							else {
 								if(position == (finished_sprints.size()) || position == (finished_sprints.size() + 1))

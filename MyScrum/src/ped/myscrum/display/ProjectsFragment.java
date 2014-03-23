@@ -3,13 +3,11 @@ package ped.myscrum.display;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.StreamCorruptedException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -67,7 +65,8 @@ public class ProjectsFragment extends Fragment {
 		NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
 		
 		if(activeNetworkInfo != null && activeNetworkInfo.isConnected()){
-			new ProjectsInformationRetrieval(listDataHeader, listDataChild, expListView).execute("http://10.0.2.2:3000/api/owner/projects?api_key=" + api_key);
+			new ProjectsInformationRetrieval(listDataHeader, listDataChild, expListView).execute("http://10.0.2.2:3000/api/" +
+					"owner/projects?api_key=" + api_key);
 		}
 		else{
 			try
@@ -195,19 +194,27 @@ public class ProjectsFragment extends Fragment {
 	}
 
 	
-	public void save_data() throws FileNotFoundException, IOException{
+	public void save_data(){
 		File save = new File(this.getActivity().getFilesDir() + "projects.bin");
-		save.createNewFile();
-		ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(save));
-		oos.writeObject(projects);
-		oos.flush();
-		oos.close();
+		try {
+			save.createNewFile();
+			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(save));
+			oos.writeObject(projects);
+			oos.flush();
+			oos.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@SuppressWarnings("resource")
-	public Project load_data(File f) throws StreamCorruptedException, FileNotFoundException, IOException, ClassNotFoundException{
+	public Project load_data(File f){
+		try {
 		ObjectInputStream ois = new ObjectInputStream(new FileInputStream(f));
 		projects = (Project) ois.readObject();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return projects;
 	}
 	

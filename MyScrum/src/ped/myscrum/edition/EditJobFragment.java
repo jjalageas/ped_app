@@ -169,13 +169,13 @@ private class JobInformationRetrieval extends AsyncTask<String, String, String>{
 		
 	EditText title;	
 	EditText description;
-	Spinner status;
+	//Spinner status;
 	EditText difficulty;
 		
 		public JobInformationRetrieval(EditText title, EditText description, Spinner status, EditText difficulty){
 			this.title = title;
 			this.description = description;
-			this.status = status;
+			//this.status = status;
 			this.difficulty = difficulty;
 		}
 		

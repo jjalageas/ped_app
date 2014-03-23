@@ -13,9 +13,6 @@ import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.simple.parser.JSONParser;
-
-
 import ped.myscrum.gen.R;
 import android.app.Fragment;
 import android.os.AsyncTask;
@@ -276,6 +273,7 @@ private class TestInformationRetrieval extends AsyncTask<String, String, String>
 	}
 
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	protected void onPostExecute(String result) {
 
