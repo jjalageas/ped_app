@@ -25,6 +25,7 @@ import ped.myscrum.serialization.Backlog;
 import ped.myscrum.serialization.BacklogContent;
 import android.app.Fragment;
 import android.content.Context;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -250,8 +251,31 @@ public class SprintsUserStoriesFragment extends Fragment {
 				e.printStackTrace();
 			}
 
+			
+			listAdapter = new ExpandableListAdapter(SprintsUserStoriesFragment.this, listDataHeader, listDataChild) {
+				@Override
+				public View getGroupView(int position, boolean b, View convertView, android.view.ViewGroup parent) {
+					View result = super.getGroupView(position, false, convertView, parent);
+					if(b == false){
+						for(int i=0; i<listDataHeader.size(); i++)
+							if(position == i){
+								result.setBackgroundColor(Color.DKGRAY);
+							} 
+							else {
+								if(position == (listDataHeader.size()-1))
+										result.setBackgroundColor(Color.BLACK);
+								else{
+									if(position == i)
+										result.setBackgroundColor(Color.DKGRAY);
+								}
+							}
 
-			listAdapter = new ExpandableListAdapter(SprintsUserStoriesFragment.this, listDataHeader, listDataChild);
+					}
+					if(position == (listDataHeader.size()-1))
+						result.setBackgroundColor(Color.BLACK);
+					return result;
+				}
+			};
 			this.expListView.setAdapter(listAdapter);
 			
 			try {

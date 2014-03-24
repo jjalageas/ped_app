@@ -25,6 +25,7 @@ import ped.myscrum.serialization.Project;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -116,7 +117,7 @@ public class ProjectsFragment extends Fragment {
 				    fragment.setArguments(pro_args);
 					FragmentManager fragmentManager = getFragmentManager();
 					fragmentManager.beginTransaction()
-							.replace(R.id.frame_container, fragment).commit();
+							.replace(R.id.frame_container, fragment).addToBackStack(String.valueOf(groupPosition)).commit();
 				}
 				return false;
 			}
@@ -292,7 +293,30 @@ public class ProjectsFragment extends Fragment {
 				e.printStackTrace();
 			}
 
-			listAdapter = new ExpandableListAdapter(ProjectsFragment.this, listDataHeader, listDataChild);
+			listAdapter = new ExpandableListAdapter(ProjectsFragment.this, listDataHeader, listDataChild) {
+				@Override
+				public View getGroupView(int position, boolean b, View convertView, android.view.ViewGroup parent) {
+					View result = super.getGroupView(position, false, convertView, parent);
+					if(b == false){
+						for(int i=0; i<listDataHeader.size(); i++)
+							if(position == i){
+								result.setBackgroundColor(Color.DKGRAY);
+							} 
+							else {
+								if(position == (listDataHeader.size()-1))
+										result.setBackgroundColor(Color.BLACK);
+								else{
+									if(position == i)
+										result.setBackgroundColor(Color.DKGRAY);
+								}
+							}
+
+					}
+					if(position == (listDataHeader.size()-1))
+						result.setBackgroundColor(Color.BLACK);
+					return result;
+				}
+			};
 			this.expListView.setAdapter(listAdapter);
 			
 			try {

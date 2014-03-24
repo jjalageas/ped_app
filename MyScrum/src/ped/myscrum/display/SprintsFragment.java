@@ -318,20 +318,6 @@ public class SprintsFragment extends Fragment {
 
 			}
 
-			for(int i=0; i<data.length(); i++){
-				if(finished_sprints.get(String.valueOf(i)).equals("finished")){
-					List<String> project = new ArrayList<String>();
-					listDataHeader.set(i, listDataHeader.get(i) + ("     DONE"));
-					project.add("Start Date: " + data.getJSONObject(i).getString("start_date").substring(0, 10));
-					project.add("Duration: " + data.getJSONObject(i).getString("duration"));
-					project.add("User Stories");
-					project.add("Jobs");
-					project.add("Charts");
-					project.add("Edit Sprint");
-					listDataChild.put(listDataHeader.get(i), project);
-				}
-
-			}
 			} catch (JSONException e) {
 				e.printStackTrace();
 			} catch (ParseException e) {
@@ -347,14 +333,14 @@ public class SprintsFragment extends Fragment {
 					if(b == false){
 						for(int i=0; i<finished_sprints.size(); i++)
 							if(finished_sprints.get(String.valueOf(i)).equals("finished") && position == i){
-								result.setBackgroundColor(Color.GRAY);
+								result.setBackgroundColor(Color.DKGRAY);
 							} 
 							else {
 								if(position == (finished_sprints.size()) || position == (finished_sprints.size() + 1))
 										result.setBackgroundColor(Color.BLACK);
 								else{
 									if(finished_sprints.get(String.valueOf(i)).equals("not_finished") && position == i)
-										result.setBackgroundColor(Color.GRAY);
+										result.setBackgroundColor(Color.DKGRAY);
 								}
 							}
 

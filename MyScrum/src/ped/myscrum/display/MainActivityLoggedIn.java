@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import ped.myscrum.adapter.NavDrawerListAdapter;
 import ped.myscrum.gen.R;
-import ped.myscrum.model.NavDrawerItem;
+import ped.myscrum.serialization.NavDrawerItem;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;

@@ -3,7 +3,7 @@ package ped.myscrum.display;
 import java.util.ArrayList;
 
 import ped.myscrum.adapter.NavDrawerListAdapter;
-import ped.myscrum.model.NavDrawerItem;
+import ped.myscrum.serialization.NavDrawerItem;
 import ped.myscrum.creation.CreateAccountFragment;
 import ped.myscrum.gen.R;
 import android.app.Activity;

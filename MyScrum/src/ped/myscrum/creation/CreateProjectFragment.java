@@ -32,11 +32,20 @@ public class CreateProjectFragment extends Fragment{
         View rootView = inflater.inflate(R.layout.fragment_create_project, container, false);
         
         Button create_project = (Button) rootView.findViewById(R.id.create_project);
+        Button back = (Button) rootView.findViewById(R.id.back);
         
         final EditText project_name = (EditText) rootView.findViewById(R.id.edit_project_name);
         final EditText project_repo = (EditText) rootView.findViewById(R.id.edit_project_repo);
         final EditText project_description = (EditText) rootView.findViewById(R.id.description);
         final CheckBox public_box = (CheckBox) rootView.findViewById(R.id.public_);
+        
+		back.setOnClickListener(new OnClickListener() {	
+			@Override
+			public void onClick(View v) {
+				getFragmentManager().popBackStackImmediate();
+			}
+			
+		});
         
         create_project.setOnClickListener(new OnClickListener() {	
 			@Override

@@ -333,17 +333,21 @@ public class JobsFragment extends Fragment {
 					if(b == false){
 						for(int i=0; i<finished_jobs.size(); i++)	
 							if(finished_jobs.get(String.valueOf(i)).equals("done") && position == i){
-								result.setBackgroundColor(Color.GRAY);
+								result.setBackgroundColor(Color.DKGRAY);
 								tv.setTextColor(Color.GREEN);
 							} 
 							else {
 								if(position == (finished_jobs.size()) || position == (finished_jobs.size() + 1))
 										result.setBackgroundColor(Color.BLACK);
 								else{
-									if(finished_jobs.get(String.valueOf(i)).equals("to_do") && position == i)
-										result.setBackgroundColor(Color.GRAY);
-									if(finished_jobs.get(String.valueOf(i)).equals("in_progress") && position == i)
-										result.setBackgroundColor(Color.GRAY);
+									if(finished_jobs.get(String.valueOf(i)).equals("to_do") && position == i){
+										result.setBackgroundColor(Color.DKGRAY);
+										tv.setTextColor(Color.RED);
+									}
+									if(finished_jobs.get(String.valueOf(i)).equals("in_progress") && position == i){
+										result.setBackgroundColor(Color.DKGRAY);
+										tv.setTextColor(Color.rgb(255, 165, 0));
+									}
 								}
 							}
 
