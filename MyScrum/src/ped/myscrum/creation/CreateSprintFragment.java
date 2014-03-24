@@ -78,6 +78,7 @@ public class CreateSprintFragment extends Fragment{
 			@Override
 			public void onClick(View v) {
 				new PostSprint(date, duration, user_stories).execute("http://10.0.2.2:3000/api/owner/projects/" + project_id + "/create_sprint?api_key=" + api_key);
+				getFragmentManager().popBackStackImmediate();			
 			}
 
 		});
