@@ -51,6 +51,7 @@ public class CreateProjectFragment extends Fragment{
 			@Override
 			public void onClick(View v) {
 				new PostProject(project_name, project_repo, project_description, public_box).execute("http://10.0.2.2:3000/api/owner/projects/create?api_key=" + api_key);
+				getFragmentManager().popBackStackImmediate();
 			}
 			
 		});
