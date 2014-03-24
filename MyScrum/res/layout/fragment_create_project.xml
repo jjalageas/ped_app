@@ -84,4 +84,13 @@
         android:layout_marginTop="22dp"
         android:text="@string/public_" />
 
+    <Button
+        android:id="@+id/back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/create_project"
+        android:layout_alignBottom="@+id/create_project"
+        android:layout_toLeftOf="@+id/create_project"
+        android:text="@string/back" />
+
 </RelativeLayout>
