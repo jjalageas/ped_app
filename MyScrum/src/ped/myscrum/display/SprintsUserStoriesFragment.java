@@ -206,7 +206,7 @@ public class SprintsUserStoriesFragment extends Fragment {
 			data = new JSONArray(result);
 			
 			for(int i=0; i<data.length(); i++){
-				listDataHeader.add("User Story " + data.getJSONObject(i).getString("id"));
+				listDataHeader.add("User Story " + i);
 				backlog.getBacklog().add(new BacklogContent("User Story " + (String) data.getJSONObject(i).getString("id")));
 			}
 			listDataHeader.add("Back to Sprints");
@@ -220,12 +220,12 @@ public class SprintsUserStoriesFragment extends Fragment {
 				project.add("Priority: " + data.getJSONObject(i).getString("priority"));
 				project.add("Difficulty: " + data.getJSONObject(i).getString("difficulty"));
 				
-				if(data.getJSONObject(i).getString("finished").equals("null"))
+				if(data.getJSONObject(i).getString("finished").equals("null") || data.getJSONObject(i).getString("finished").equals("false") || data.getJSONObject(i).getString("finished").equals("false"))
 					project.add("Finished: " + "No");
 				else
 					project.add("Finished: " + "Yes");
 				
-				if(data.getJSONObject(i).getString("valid").equals("null"))
+				if(data.getJSONObject(i).getString("valid").equals("null") || data.getJSONObject(i).getString("valid").equals("false"))
 					project.add("Validated: " + "No");
 				else
 					project.add("Validated: " + "Yes");
@@ -237,11 +237,11 @@ public class SprintsUserStoriesFragment extends Fragment {
 				backlog.getBacklog().get(i).setPriority("Priority: " + data.getJSONObject(i).getString("priority"));
 				backlog.getBacklog().get(i).setDifficulty("Difficulty: " + data.getJSONObject(i).getString("difficulty"));
 				
-				if(data.getJSONObject(i).getString("finished").equals("null"))
+				if(data.getJSONObject(i).getString("finished").equals("null") || data.getJSONObject(i).getString("finished").equals("false"))
 					backlog.getBacklog().get(i).setFinished("Finished: No");
 				else
 					backlog.getBacklog().get(i).setFinished("Finished: Yes");
-				if(data.getJSONObject(i).getString("valid").equals("null"))
+				if(data.getJSONObject(i).getString("valid").equals("null") || data.getJSONObject(i).getString("valid").equals("false"))
 					backlog.getBacklog().get(i).setValidated("Validated: No");
 				else
 					backlog.getBacklog().get(i).setValidated("Validated: Yes");
