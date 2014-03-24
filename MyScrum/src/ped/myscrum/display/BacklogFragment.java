@@ -249,12 +249,12 @@ public class BacklogFragment extends Fragment {
 				project.add("Priority: " + data.getJSONObject(i).getString("priority"));
 				project.add("Difficulty: " + data.getJSONObject(i).getString("difficulty"));
 				
-				if(data.getJSONObject(i).getString("finished").equals("null"))
+				if(data.getJSONObject(i).getString("finished").equals("null") || data.getJSONObject(i).getString("finished").equals("false"))
 					project.add("Finished: " + "No");
 				else
 					project.add("Finished: " + "Yes");
 				
-				if(data.getJSONObject(i).getString("valid").equals("null"))
+				if(data.getJSONObject(i).getString("valid").equals("null") || data.getJSONObject(i).getString("valid").equals("false"))
 					project.add("Validated: " + "No");
 				else
 					project.add("Validated: " + "Yes");
@@ -267,11 +267,11 @@ public class BacklogFragment extends Fragment {
 				backlog.getBacklog().get(i).setPriority("Priority: " + data.getJSONObject(i).getString("priority"));
 				backlog.getBacklog().get(i).setDifficulty("Difficulty: " + data.getJSONObject(i).getString("difficulty"));
 				
-				if(data.getJSONObject(i).getString("finished").equals("null"))
+				if(data.getJSONObject(i).getString("finished").equals("null") || data.getJSONObject(i).getString("finished").equals("false"))
 					backlog.getBacklog().get(i).setFinished("Finished: No");
 				else
 					backlog.getBacklog().get(i).setFinished("Finished: Yes");
-				if(data.getJSONObject(i).getString("valid").equals("null"))
+				if(data.getJSONObject(i).getString("valid").equals("null") || data.getJSONObject(i).getString("valid").equals("false"))
 					backlog.getBacklog().get(i).setValidated("Validated: No");
 				else
 					backlog.getBacklog().get(i).setValidated("Validated: Yes");

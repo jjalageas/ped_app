@@ -220,7 +220,7 @@ public class SprintsUserStoriesFragment extends Fragment {
 				project.add("Priority: " + data.getJSONObject(i).getString("priority"));
 				project.add("Difficulty: " + data.getJSONObject(i).getString("difficulty"));
 				
-				if(data.getJSONObject(i).getString("finished").equals("null") || data.getJSONObject(i).getString("finished").equals("false") || data.getJSONObject(i).getString("finished").equals("false"))
+				if(data.getJSONObject(i).getString("finished").equals("null") || data.getJSONObject(i).getString("finished").equals("false"))
 					project.add("Finished: " + "No");
 				else
 					project.add("Finished: " + "Yes");
