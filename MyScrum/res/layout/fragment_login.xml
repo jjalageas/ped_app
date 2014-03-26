@@ -14,7 +14,7 @@
         android:layout_centerVertical="true"
         android:ems="10"
         android:inputType="textAutoComplete"
-        android:text="9292da205a474a11ecd8117fcf962a3bcbc1b9b2" >
+        android:text="c324ae5f02c3e1811a82a1e0338ce06ccbe1f863" >
 
         <requestFocus />
     </EditText>

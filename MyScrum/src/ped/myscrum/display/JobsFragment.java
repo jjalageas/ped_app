@@ -352,8 +352,10 @@ public class JobsFragment extends Fragment {
 							}
 
 					}
-					if(position == (finished_jobs.size()) || position == (finished_jobs.size() + 1))
+					if(position == (finished_jobs.size()) || position == (finished_jobs.size() + 1)){
 						result.setBackgroundColor(Color.BLACK);
+						tv.setTextColor(Color.rgb(255, 165, 0));
+					}
 					return result;
 				}
 			};
